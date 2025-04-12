@@ -6,9 +6,11 @@ import connectDB from './config/connectDb';
 
 // // Import routes
 import authRoutes from './routes/authRoutes';
-import carRoutes from './routes/carRoutes';
+// import carRoutes from './routes/carRoutes';
 // Load environment variables
 import 'dotenv/config'
+import carRoutes from './routes/carRoutes';
+import userRoutes from './routes/userRouter';
 
 
 // Initialize express app
@@ -28,6 +30,8 @@ connectDB(MONGO_DB_URI);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
+// Add routes to the app
+app.use('/api/users', userRoutes);
 
 
 

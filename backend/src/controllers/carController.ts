@@ -1,108 +1,84 @@
 import { Request, Response } from 'express';
 import Car from '../models/carModel';
 
-// Interface for AuthRequest
-interface AuthRequest extends Request {
-  userId?: string;
-}
-
-// @desc    Get all cars
-// @route   GET /api/cars
-// @access  Public
-export const getAllCars = async (req: Request, res: Response) => {
+// Get all cars
+export const getAllCars = async (req: Request, res: Response): Promise<void> => {
   try {
-    const cars = await Car.find().populate({
-      path: 'owner',
-      select: 'name profileImage joinedDate responseRate responseTime'
-    });
+    const cars = await Car.find().populate('owner', 'name email profileImage');
     
     res.status(200).json({
       success: true,
       count: cars.length,
       data: cars
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error instanceof Error ? error.message : 'Server error'
     });
   }
 };
 
-// @desc    Get car by ID
-// @route   GET /api/cars/:id
-// @access  Public
-export const getCarById = async (req: Request, res: Response):Promise<void> => {
+// Get single car
+export const getCar = async (req: Request, res: Response): Promise<void> => {
   try {
-    const car = await Car.findOne({ id: req.params.id }).populate({
-      path: 'owner',
-      select: 'name profileImage joinedDate responseRate responseTime'
-    });
+    const car = await Car.findById(req.params.id).populate('owner', 'name email profileImage');
     
     if (!car) {
-       res.status(404).json({
-        success: false,
-        message: 'Car not found'
-      });
+      res.status(404).json({ success: false, message: 'Car not found' });
+      return;
     }
     
     res.status(200).json({
       success: true,
       data: car
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error instanceof Error ? error.message : 'Server error'
     });
   }
 };
 
-// @desc    Create new car
-// @route   POST /api/cars
-// @access  Private
-export const createCar = async (req: AuthRequest, res: Response) => {
+// Create new car
+export const createCar = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Add owner to req.body
-    req.body.owner = req.userId;
-    
+    // Set owner to current user
+    console.log("hello world")
+    req.body.owner = req.user?.id;
+    // console.log("---1:",  req.body.owner)
     const car = await Car.create(req.body);
     
     res.status(201).json({
       success: true,
       data: car
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error instanceof Error ? error.message : 'Server error'
     });
   }
 };
 
-// @desc    Update car
-// @route   PUT /api/cars/:id
-// @access  Private
-export const updateCar = async (req: AuthRequest, res: Response) => {
+// Update car
+export const updateCar = async (req: Request, res: Response): Promise<void> => {
   try {
-    let car = await Car.findOne({ id: req.params.id });
+    let car = await Car.findById(req.params.id);
     
     if (!car) {
-      return res.status(404).json({
-        success: false,
-        message: 'Car not found'
-      });
+      res.status(404).json({ success: false, message: 'Car not found' });
+      return;
     }
     
-    // Make sure user is car owner
-    if (car.owner.toString() !== req.userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Not authorized to update this car'
-      });
+    // Check if user is car owner
+    if (car.owner.toString() !== req.user?.id && req.user?.role !== 'admin') {
+      res.status(403).json({ success: false, message: 'Not authorized to update this car' });
+      return;
     }
     
-    car = await Car.findOneAndUpdate({ id: req.params.id }, req.body, {
+    car = await Car.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
     });
@@ -111,46 +87,40 @@ export const updateCar = async (req: AuthRequest, res: Response) => {
       success: true,
       data: car
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error instanceof Error ? error.message : 'Server error'
     });
   }
 };
 
-// @desc    Delete car
-// @route   DELETE /api/cars/:id
-// @access  Private
-export const deleteCar = async (req: AuthRequest, res: Response) => {
+// Delete car
+export const deleteCar = async (req: Request, res: Response): Promise<void> => {
   try {
-    const car = await Car.findOne({ id: req.params.id });
+    const car = await Car.findById(req.params.id);
     
     if (!car) {
-      return res.status(404).json({
-        success: false,
-        message: 'Car not found'
-      });
+      res.status(404).json({ success: false, message: 'Car not found' });
+      return;
     }
     
-    // Make sure user is car owner
-    if (car.owner.toString() !== req.userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Not authorized to delete this car'
-      });
+    // Check if user is car owner
+    if (car.owner.toString() !== req.user?.id && req.user?.role !== 'admin') {
+      res.status(403).json({ success: false, message: 'Not authorized to delete this car' });
+      return;
     }
     
-    await Car.deleteOne({ id: req.params.id });
+    await car.deleteOne();
     
     res.status(200).json({
       success: true,
       data: {}
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error instanceof Error ? error.message : 'Server error'
     });
   }
 };

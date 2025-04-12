@@ -42,13 +42,12 @@ const userSchema = new mongoose.Schema({
   responseTime: {
     type: String,
     default: 'N/A'
-  },
+  }, 
   resetPasswordToken: String,
   resetPasswordExpire: Date
 }, {
   timestamps: true
 });
-
 
 const User = mongoose.model('User', userSchema);
 export default User;

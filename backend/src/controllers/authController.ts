@@ -10,11 +10,17 @@ interface AuthRequest extends Request {
 
 // Helper function to generate JWT
 const generateToken = (id: string): string => {
-  return jwt.sign({ id }, process.env.JWT_SECRET as string, {
-    expiresIn: process.env.JWT_EXPIRE ? parseInt(process.env.JWT_EXPIRE, 10) : '30d'
-  });
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET as string,
+    { expiresIn: '30d' } // Set a longer expiration - 30 days
+  );
 };
-
+// const token = jwt.sign(
+//   { id: user._id },
+//   process.env.JWT_SECRET as string,
+//   { expiresIn: '30d' } // Set a longer expiration - 30 days
+// );
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
@@ -128,22 +134,40 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/auth/me
+// @desc    Update user profile
+// @route   PUT /api/users/:id
 // @access  Private
-
-
-export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
+export const updateUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const user = await User.findById(req.userId);
+    const { name, email, profileImage } = req.body;
+
+    // Ensure the user is updating their own profile
+    if (req.userId !== req.params.id) {
+      res.status(403).json({
+        success: false,
+        message: 'You are not authorized to update this profile',
+      });
+      return;
+    }
+
+    // Find the user to update
+    const user = await User.findById(req.params.id);
 
     if (!user) {
       res.status(404).json({
         success: false,
-        message: 'User not found'
+        message: 'User not found',
       });
       return;
     }
+
+    // Update user fields
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (profileImage) user.profileImage = profileImage;
+
+    // Save updated user
+    await user.save();
 
     res.status(200).json({
       success: true,
@@ -151,15 +175,54 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
         profileImage: user.profileImage,
-        joinedDate: user.joinedDate
-      }
+      },
     });
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
+    });
+  }
+};
+
+
+// @desc    Delete user account
+// @route   DELETE /api/users/:id
+// @access  Private
+export const deleteUser = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Ensure the user is deleting their own account
+    if (req.userId !== req.params.id) {
+      res.status(403).json({
+        success: false,
+        message: 'You are not authorized to delete this account',
+      });
+      return;
+    }
+
+    // Find the user to delete
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+      return;
+    }
+
+    // Delete user
+    await user.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully',
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };
