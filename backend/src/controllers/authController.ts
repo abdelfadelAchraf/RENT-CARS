@@ -1,4 +1,3 @@
-// backend/src/controllers/authController.ts
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -19,16 +18,16 @@ const generateToken = (id: string): string => {
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
-export const register = async (req: Request, res: Response):Promise<void> => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-       res.status(400).json({ 
-        success: false, 
-        message: 'User already exists' 
+      res.status(400).json({
+        success: false,
+        message: 'User already exists'
       });
     }
 
@@ -68,32 +67,32 @@ export const register = async (req: Request, res: Response):Promise<void> => {
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
-export const login = async (req: Request, res: Response):Promise<void> => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
     // Validate email & password
     if (!email || !password) {
-       res.status(400).json({ 
-        success: false, 
-        message: 'Please provide email and password' 
+      res.status(400).json({
+        success: false,
+        message: 'Please provide email and password'
       });
     }
 
     // Check for user
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-       res.status(401).json({ 
-        success: false, 
-        message: 'Invalid credentials' 
+      res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
       });
     }
 
     // Check if user exists before comparing password
     if (!user) {
-      res.status(401).json({ 
-        success: false, 
-        message: 'Invalid credentials' 
+      res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
       });
       return;
     }
@@ -101,9 +100,9 @@ export const login = async (req: Request, res: Response):Promise<void> => {
     // Check if password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-       res.status(401).json({ 
-        success: false, 
-        message: 'Invalid credentials' 
+      res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
       });
     }
 
@@ -132,26 +131,18 @@ export const login = async (req: Request, res: Response):Promise<void> => {
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
-// export const getMe = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
-//     try {
-//         // Your logic here
-        
-//         res.status(200).json({ success: true, data: 'Your data' });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
 
-export const getMe = async (req: AuthRequest, res: Response):Promise<void> => {
+
+export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.userId);
-    
+
     if (!user) {
-       res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'User not found'
       });
-       return;
+      return;
     }
 
     res.status(200).json({

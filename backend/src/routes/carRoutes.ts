@@ -1,7 +1,6 @@
 // backend/src/routes/carRoutes.ts
 import express from 'express';
 import { createCar, getAllCars, getCarById } from '../controllers/carController';
-import { protect } from '../middleware/authMiddleware';
 
 
 
@@ -9,10 +8,10 @@ const carRoutes = express.Router();
 
 // Public routes
 carRoutes.get('/', getAllCars);
- carRoutes.get('/:id', getCarById);
+carRoutes.get('/:id', getCarById);
 
 // Protected routes
-carRoutes.post('/',  createCar);
+carRoutes.post('/', createCar);
 // carRoutes.put('/:id', protect, updateCar);
 // carRoutes.delete('/:id', protect, deleteCar);
 
