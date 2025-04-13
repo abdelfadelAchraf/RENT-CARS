@@ -16,6 +16,7 @@ import SupportPage from './pages/SupportPage';
 import AddCarPage from './pages/AddCarPage';
 import AccountSettingsPage from './pages/AccountSettingsPage';
 import { ToastContainer } from 'react-toastify';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -38,8 +39,10 @@ function App() {
         <Route path="/support" element={<SupportPage />} />
 
 
-        <Route path="/add-car" element={<AddCarPage />} />
-        <Route path="/profile" element={<AccountSettingsPage />} />
+        <Route element={<ProtectedRoute />}>
+            <Route path="/add-car" element={<AddCarPage />} />
+            <Route path="/profile" element={<AccountSettingsPage />} />
+          </Route>
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

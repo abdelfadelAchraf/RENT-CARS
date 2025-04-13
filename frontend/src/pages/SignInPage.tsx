@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
 
 const SignInPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +11,8 @@ const SignInPage: React.FC = () => {
     password: '',
     rememberMe: false
   });
+  const { login ,  } = useAuth();
   
-  const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,15 +39,7 @@ const SignInPage: React.FC = () => {
     }
   };
   
-  const handleGoogleSignIn = async () => {
-    try {
-      await loginWithGoogle();
-      // Navigation will happen after successful login in the callback
-    } catch (error) {
-      console.error("Google login failed:", error);
-      toast.error('Google login failed. Please try again.');
-    }
-  };
+  
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -124,7 +116,7 @@ const SignInPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <button
                 type="button"
-                onClick={handleGoogleSignIn}
+                // onClick={handleGoogleSignIn}
                 className="flex items-center justify-center py-2 px-4 border rounded-lg hover:bg-gray-50 transition"
               >
                 <FaGoogle className="text-red-500 mr-2" />

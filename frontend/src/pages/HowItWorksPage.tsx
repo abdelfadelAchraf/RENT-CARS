@@ -1,6 +1,7 @@
 // pages/HowItWorksPage.tsx
 import React from 'react';
 import { FaSearch, FaCreditCard, FaCar, FaCheckCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 interface StepCardProps {
   icon: React.ReactNode;
@@ -117,9 +118,10 @@ const HowItWorksPage: React.FC = () => {
   <p className="text-gray-600 max-w-2xl mx-auto mb-6">
     Experience the freedom of the open road with our premium rental fleet. Book your perfect car today.
   </p>
-  <button className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition">
+<Link to='/rental-deals'>
+<button className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition">
     Find Your Car Now
-  </button>
+  </button></Link>
 </div>
 </div>
   )};

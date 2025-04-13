@@ -1,7 +1,8 @@
+// src/controllers/carController.ts
 import { Request, Response } from 'express';
 import Car from '../models/carModel';
 
-// Get all cars
+// Get all cars - no changes needed
 export const getAllCars = async (req: Request, res: Response): Promise<void> => {
   try {
     const cars = await Car.find().populate('owner', 'name email profileImage');
@@ -19,7 +20,7 @@ export const getAllCars = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// Get single car
+// Get single car - no changes needed
 export const getCar = async (req: Request, res: Response): Promise<void> => {
   try {
     const car = await Car.findById(req.params.id).populate('owner', 'name email profileImage');
@@ -41,13 +42,18 @@ export const getCar = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Create new car
+// Create new car - updated to handle images
 export const createCar = async (req: Request, res: Response): Promise<void> => {
   try {
     // Set owner to current user
-    console.log("hello world")
     req.body.owner = req.user?.id;
-    // console.log("---1:",  req.body.owner)
+    
+    // Handle uploaded images if any
+    if (req.files && Array.isArray(req.files)) {
+      // Extract the Cloudinary URLs from the uploaded files
+      req.body.images = (req.files as Express.Multer.File[]).map(file => (file as any).path);
+    }
+    
     const car = await Car.create(req.body);
     
     res.status(201).json({
@@ -62,7 +68,7 @@ export const createCar = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Update car
+// Update car - updated to handle images
 export const updateCar = async (req: Request, res: Response): Promise<void> => {
   try {
     let car = await Car.findById(req.params.id);
@@ -76,6 +82,12 @@ export const updateCar = async (req: Request, res: Response): Promise<void> => {
     if (car.owner.toString() !== req.user?.id && req.user?.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to update this car' });
       return;
+    }
+    
+    // Handle uploaded images if any
+    if (req.files && Array.isArray(req.files)) {
+      // Extract the Cloudinary URLs from the uploaded files
+      req.body.images = (req.files as Express.Multer.File[]).map(file => (file as any).path);
     }
     
     car = await Car.findByIdAndUpdate(req.params.id, req.body, {
@@ -94,6 +106,8 @@ export const updateCar = async (req: Request, res: Response): Promise<void> => {
     });
   }
 };
+
+// Delete car - no changes needed
 
 // Delete car
 export const deleteCar = async (req: Request, res: Response): Promise<void> => {

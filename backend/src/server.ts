@@ -3,7 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/connectDb';
-
+import path from 'path';
 // // Import routes
 import authRoutes from './routes/authRoutes';
 // import carRoutes from './routes/carRoutes';
@@ -11,6 +11,8 @@ import authRoutes from './routes/authRoutes';
 import 'dotenv/config'
 import carRoutes from './routes/carRoutes';
 import userRoutes from './routes/userRouter';
+import uploadRoutes from './routes/uploadRoutes';
+import imageRoutes from './routes/imageRoutes';
 
 
 // Initialize express app
@@ -19,6 +21,10 @@ const app: Express = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Connect to MongoDB
 const MONGO_DB_URI = process.env.MONGODB_URI;
@@ -32,6 +38,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
 // Add routes to the app
 app.use('/api/users', userRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/images', imageRoutes);
 
 
 

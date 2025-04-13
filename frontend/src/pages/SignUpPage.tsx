@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaFacebook, FaGoogle } from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/AuthContext';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +15,9 @@ const SignUpPage: React.FC = () => {
     confirmPassword: '',
     agreeTerms: false
   });
-  
+  const { register} = useAuth();
+
   const navigate = useNavigate();
-  const { register, loginWithGoogle } = useAuth();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -51,16 +51,7 @@ const SignUpPage: React.FC = () => {
       toast.error(`Registration failed: ${result.message}`);
     }
   };
-  
-  const handleGoogleSignUp = async () => {
-    try {
-      await loginWithGoogle();
-      // Navigation will happen after successful login in the callback
-    } catch (error) {
-      console.error("Google signup failed:", error);
-      toast.error('Google signup failed. Please try again.');
-    }
-  };
+ 
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -212,7 +203,7 @@ const SignUpPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <button
                 type="button"
-                onClick={handleGoogleSignUp}
+                // onClick={handleGoogleSignUp}
                 className="flex items-center justify-center py-2 px-4 border rounded-lg hover:bg-gray-50 transition"
               >
                 <FaGoogle className="text-red-500 mr-2" />
