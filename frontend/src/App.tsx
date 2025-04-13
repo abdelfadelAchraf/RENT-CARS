@@ -13,12 +13,16 @@ import SignUpPage from './pages/SignUpPage';
 import WhyChooseUs from './pages/WhyChooseUs';
 import RentalDetailsPage from './pages/RentalDetailsPage';
 import SupportPage from './pages/SupportPage';
+import AddCarPage from './pages/AddCarPage';
+import AccountSettingsPage from './pages/AccountSettingsPage';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
-    <div>
+    <div >
       <Navbar />
       <ScrollToTop/>
+      <ToastContainer position="bottom-right" />
       <Routes>
         {/* Tes autres routes ici */}
         
@@ -32,6 +36,10 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/why-choose-us" element={<WhyChooseUs />} />
         <Route path="/support" element={<SupportPage />} />
+
+
+        <Route path="/add-car" element={<AddCarPage />} />
+        <Route path="/profile" element={<AccountSettingsPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

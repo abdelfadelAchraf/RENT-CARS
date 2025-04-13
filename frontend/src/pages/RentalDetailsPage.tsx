@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams  , useNavigate} from 'react-router-dom';
 import { FaCalendarAlt, FaMapMarkerAlt, FaStar, FaUsers, FaSuitcase, FaTachometerAlt, FaGasPump, FaCheck } from 'react-icons/fa';
 import { AllCars } from '../assets/constants';
 
@@ -10,7 +10,8 @@ const RentalDetailsPage: React.FC = () => {
   const [mainImage, setMainImage] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-
+    const navigate = useNavigate();
+  
   useEffect(() => {
     const fetchCar = async () => {
       try {
@@ -62,11 +63,14 @@ const RentalDetailsPage: React.FC = () => {
     return carData.price * diffDays;
   };
 
+  const handleBack = () => {
+    navigate(-1); // Go back to previous page
+  };
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
       {/* Breadcrumbs */}
       <div className="text-sm mb-4 overflow-x-auto whitespace-nowrap">
-        <span className="text-gray-500">Home</span> &gt; <span className="text-gray-500">Cars</span> &gt; <span className="font-medium">{carData.name}</span>
+        <span className="text-blue-500 cursor-pointer" onClick={handleBack}>Home</span> &gt; <span onClick={handleBack} className="text-blue-500 cursor-pointer">Cars</span> &gt; <span className="font-medium">{carData.name}</span>
       </div>
 
       {/* Car Title and Basic Info */}
@@ -95,14 +99,14 @@ const RentalDetailsPage: React.FC = () => {
 
       {/* Image Gallery */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="md:col-span-2 rounded-lg overflow-hidden h-64 sm:h-72 md:h-96">
+        <div className="  sticky top-16 md:col-span-2 rounded-lg  h-64 sm:h-72 md:h-96">
           <img src={mainImage} alt={carData.name} className="w-full h-full object-cover" />
         </div>
         <div className="grid grid-cols-3 md:grid-cols-1 md:grid-rows-3 gap-2 bg-blue-200 rounded-sm p-2">
           {carData.images.slice(0, 3).map((image: string, index: number) => (
             <div
               key={index}
-              className="rounded-lg overflow-hidden cursor-pointer h-20 sm:h-24 md:h-28"
+              className="rounded-lg overflow-hidden cursor-pointer h-20 sm:h-44 md:h-52"
               onClick={() => handleImageClick(image)}
             >
               <img src={image} alt={`${carData.name} view ${index + 1}`} className="w-full h-full object-cover" />

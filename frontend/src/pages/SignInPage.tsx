@@ -1,7 +1,9 @@
 // pages/SignInPage.tsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const SignInPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,9 @@ const SignInPage: React.FC = () => {
     password: '',
     rememberMe: false
   });
+  
+  const { login, loginWithGoogle } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -18,11 +23,30 @@ const SignInPage: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form validation would go here
-    console.log('Form submitted:', formData);
-    // Sign in API call would go here
+    try {
+      const result = await login(formData.email, formData.password);
+      if (result.success) {
+        toast.success('Logged in successfully!');
+        navigate('/'); // Navigate to home or dashboard
+      } else {
+        toast.error(result.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error('Login failed. Please check your credentials.');
+    }
+  };
+  
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      // Navigation will happen after successful login in the callback
+    } catch (error) {
+      console.error("Google login failed:", error);
+      toast.error('Google login failed. Please try again.');
+    }
   };
 
   return (
@@ -100,6 +124,7 @@ const SignInPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <button
                 type="button"
+                onClick={handleGoogleSignIn}
                 className="flex items-center justify-center py-2 px-4 border rounded-lg hover:bg-gray-50 transition"
               >
                 <FaGoogle className="text-red-500 mr-2" />

@@ -1,7 +1,9 @@
 // pages/SignUpPage.tsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaFacebook, FaGoogle } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +15,10 @@ const SignUpPage: React.FC = () => {
     confirmPassword: '',
     agreeTerms: false
   });
-
+  
+  const navigate = useNavigate();
+  const { register, loginWithGoogle } = useAuth();
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -22,11 +27,39 @@ const SignUpPage: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form validation would go here
-    console.log('Form submitted:', formData);
-    // Sign up API call would go here
+  
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+  
+    const { firstName, lastName, email, password } = formData;
+  
+    const result = await register({
+      name: `${firstName} ${lastName}`,
+      email,
+      password,
+      // Include phone only if your backend supports it
+    });
+  
+    if (result.success) {
+      toast.success('Registration successful! You can now sign in.');
+      navigate('/signin');
+    } else {
+      toast.error(`Registration failed: ${result.message}`);
+    }
+  };
+  
+  const handleGoogleSignUp = async () => {
+    try {
+      await loginWithGoogle();
+      // Navigation will happen after successful login in the callback
+    } catch (error) {
+      console.error("Google signup failed:", error);
+      toast.error('Google signup failed. Please try again.');
+    }
   };
 
   return (
@@ -179,6 +212,7 @@ const SignUpPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <button
                 type="button"
+                onClick={handleGoogleSignUp}
                 className="flex items-center justify-center py-2 px-4 border rounded-lg hover:bg-gray-50 transition"
               >
                 <FaGoogle className="text-red-500 mr-2" />
@@ -196,7 +230,7 @@ const SignUpPage: React.FC = () => {
             <div className="text-center">
               <p className="text-gray-600">
                 Already have an account?{' '}
-                <Link to="/signin" className="text-blue-500 hover:underline">
+                <Link to="/signin"  className="text-blue-500 hover:underline">
                   Sign In
                 </Link>
               </p>
