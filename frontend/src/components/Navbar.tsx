@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiMenu, FiX, FiUser, FiLogOut, FiPlus, FiSettings, FiTruck } from 'react-icons/fi';
+import { FiMenu, FiX, FiLogOut, FiPlus, FiSettings } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
+import { FaCar } from 'react-icons/fa';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -103,7 +104,7 @@ const Navbar = () => {
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
-                      <FiTruck className="text-gray-500" />
+                      <FaCar className="text-gray-500" />
                       <span>My cars</span>
                     </Link>
 
@@ -171,6 +172,13 @@ const Navbar = () => {
                 <FiPlus className="text-blue-500" />
                 <span>Add a Car</span>
               </Link>
+              <Link 
+                      to="/my-cars" 
+                      className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}
+                    >
+                      <FaCar className="text-blue-500" />
+                      <span>My cars</span>
+                    </Link>
               <Link to="/profile" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
                 <FiSettings className="text-gray-500" />
                 <span>Account Settings</span>

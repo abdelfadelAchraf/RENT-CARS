@@ -275,9 +275,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaStar, FaUsers, FaCar, FaSnowflake, FaDoorOpen, FaMapMarkerAlt, FaCheck } from 'react-icons/fa';
 import { useCars } from '../context/CarContext';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
 import axios from 'axios';
 import { Car } from '../context/CarContext';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const RentalDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
