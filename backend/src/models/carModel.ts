@@ -18,6 +18,7 @@ const carSchema = new mongoose.Schema({
         type: [String],
         required: [true, 'Please provide at least one image']
     },
+   
     rating: {
         type: Number,
         default: 0

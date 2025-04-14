@@ -11,7 +11,6 @@ import authRoutes from './routes/authRoutes';
 import 'dotenv/config'
 import carRoutes from './routes/carRoutes';
 import userRoutes from './routes/userRouter';
-import uploadRoutes from './routes/uploadRoutes';
 import imageRoutes from './routes/imageRoutes';
 
 
@@ -38,7 +37,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
 // Add routes to the app
 app.use('/api/users', userRoutes);
-app.use('/api/upload', uploadRoutes);
 app.use('/api/images', imageRoutes);
 
 

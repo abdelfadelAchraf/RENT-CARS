@@ -17,6 +17,8 @@ import AddCarPage from './pages/AddCarPage';
 import AccountSettingsPage from './pages/AccountSettingsPage';
 import { ToastContainer } from 'react-toastify';
 import ProtectedRoute from './components/ProtectedRoute';
+import MyCars from './pages/MyCars';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
   return (
@@ -37,11 +39,13 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/why-choose-us" element={<WhyChooseUs />} />
         <Route path="/support" element={<SupportPage />} />
-
-
+        {/* my-cars */}
+   <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<ProtectedRoute />}>
             <Route path="/add-car" element={<AddCarPage />} />
             <Route path="/profile" element={<AccountSettingsPage />} />
+            <Route path="/my-cars" element={<MyCars />} />
+         
           </Route>
 
         <Route path="*" element={<NotFoundPage />} />

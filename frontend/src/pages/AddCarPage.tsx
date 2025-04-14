@@ -102,65 +102,62 @@ const AddCarPage: React.FC = () => {
     setImagePreviewUrls(updatedPreviewUrls);
   };
 
-  // Handle form submission
+  // Handle form submission - MODIFIED VERSION
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      // First upload images to get URLs
+      // Validate image upload
       if (images.length === 0) {
         throw new Error('Please upload at least one image');
       }
 
-      // Upload images
-      const imageFormData = new FormData();
-      images.forEach(image => {
-        imageFormData.append('images', image);
+      // Create form data with all car information and images
+      const carFormData = new FormData();
+      
+      // Generate a unique ID based on name and current timestamp
+      const carId = `${formData.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`;
+      carFormData.append('id', carId);
+      
+      // Add all basic car fields
+      carFormData.append('name', formData.name);
+      carFormData.append('type', formData.type);
+      carFormData.append('location', formData.location);
+      carFormData.append('price', formData.price);
+      carFormData.append('passengers', formData.passengers);
+      carFormData.append('transmission', formData.transmission);
+      carFormData.append('airConditioning', formData.airConditioning ? 'true' : 'false');
+      carFormData.append('doors', formData.doors);
+      carFormData.append('category', formData.category);
+      carFormData.append('description', formData.description);
+      
+      // Add features as separate fields with the same name
+      formData.features.forEach(feature => {
+        carFormData.append('features', feature);
       });
-
-      const uploadResponse = await axios.post('/api/upload', imageFormData, {
+      
+      // Add specs as separate fields
+      carFormData.append('specs[passengers]', formData.passengers);
+      carFormData.append('specs[luggage]', formData.luggage);
+      carFormData.append('specs[range]', formData.range);
+      carFormData.append('specs[fuelType]', formData.fuelType);
+      
+      // Add all images
+      images.forEach(image => {
+        carFormData.append('images', image);
+      });
+      
+      // Submit everything in one request
+      console.log('Submitting car data...');
+      const response = await axios.post('/api/cars', carFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-
-      if (!uploadResponse.data.success) {
-        throw new Error(uploadResponse.data.message || 'Failed to upload images');
-      }
-
-      // Create car data object - matching the exact MongoDB structure
-      const carData = {
-        // Generate a unique ID based on name and current timestamp
-         id: `${formData.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
-        name: formData.name,
-        images: uploadResponse.data.imageUrls,
-        rating: 0, // Default value
-        type: formData.type,
-        location: formData.location,
-        reviewCount: 0, // Default value
-        passengers: parseInt(formData.passengers),
-        transmission: formData.transmission,
-        airConditioning: formData.airConditioning,
-        doors: parseInt(formData.doors),
-        price: parseFloat(formData.price),
-        category: formData.category,
-        description: formData.description,
-        features: formData.features,
-        specs: {
-          passengers: parseInt(formData.passengers),
-          luggage: parseInt(formData.luggage),
-          range: formData.range,
-          fuelType: formData.fuelType
-        },
-        owner: user?.id, // From auth context
-        isAvailable: true,
-        availableDates: [] // Empty array as shown in your example
-      };
-
-      // Submit car data to API
-      const response = await axios.post('/api/cars', carData);
+      
+      console.log('Car creation response:', response.data);
       
       if (response.data.success) {
         // Redirect to car listing or dashboard

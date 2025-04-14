@@ -1,6 +1,6 @@
 // pages/BecomeRenterPage.tsx
 import React, { useState } from 'react';
-import { FaCar, FaMoneyBillWave, FaCalendarAlt, FaCheckCircle, FaUpload } from 'react-icons/fa';
+import { FaMoneyBillWave, FaCalendarAlt, FaCheckCircle, FaUpload, FaFileAlt, FaUserShield } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 interface BenefitCardProps {
@@ -24,13 +24,11 @@ const BecomeRenterPage: React.FC = () => {
     firstName: '',
     lastName: '',
     email: '',
+    password: '',
+    confirmPassword: '',
     phone: '',
-    carMake: '',
-    carModel: '',
-    carYear: '',
-    carLicensePlate: '',
-    carPhotos: null,
-    driverLicense: null
+    driverLicense: null,
+    renterDocument: null
   });
 
   const benefits = [
@@ -40,14 +38,14 @@ const BecomeRenterPage: React.FC = () => {
       description: "Turn your car into a money-making asset by renting it out when you're not using it."
     },
     {
-      icon: <FaCar />,
+      icon: <FaCalendarAlt />,
       title: "Flexible Schedule",
       description: "You decide when your car is available for rent. Keep full control of your schedule."
     },
     {
-      icon: <FaCalendarAlt />,
-      title: "Easy Booking System",
-      description: "Our platform handles all bookings, payments, and scheduling for a hassle-free experience."
+      icon: <FaUserShield />,
+      title: "Simple Verification",
+      description: "Our team reviews your application quickly so you can start earning in no time."
     },
     {
       icon: <FaCheckCircle />,
@@ -103,13 +101,13 @@ const BecomeRenterPage: React.FC = () => {
       
       <div className="bg-white rounded-lg shadow-md overflow-hidden mb-16">
         <div className="bg-blue-500 p-6 text-center">
-          <h2 className="text-white text-2xl font-bold">Get Started Today</h2>
+          <h2 className="text-white text-2xl font-bold">Apply to Join Our Platform</h2>
         </div>
         
         <div className="p-6">
           <form onSubmit={handleSubmit}>
             <div className="mb-8">
-              <h3 className="text-xl font-bold mb-4">Personal Information</h3>
+              <h3 className="text-xl font-bold mb-4">Account Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-gray-700 mb-2">First Name</label>
@@ -159,89 +157,38 @@ const BecomeRenterPage: React.FC = () => {
                     required
                   />
                 </div>
-              </div>
-            </div>
-            
-            <div className="mb-8">
-              <h3 className="text-xl font-bold mb-4">Car Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 mb-2">Car Make</label>
+                  <label className="block text-gray-700 mb-2">Password</label>
                   <input
-                    type="text"
-                    name="carMake"
-                    placeholder="Toyota"
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.carMake}
+                    value={formData.password}
                     onChange={handleChange}
                     required
+                    minLength={8}
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Car Model</label>
+                  <label className="block text-gray-700 mb-2">Confirm Password</label>
                   <input
-                    type="text"
-                    name="carModel"
-                    placeholder="Camry"
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="••••••••"
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.carModel}
+                    value={formData.confirmPassword}
                     onChange={handleChange}
                     required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">Year</label>
-                  <input
-                    type="text"
-                    name="carYear"
-                    placeholder="2020"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.carYear}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 mb-2">License Plate</label>
-                  <input
-                    type="text"
-                    name="carLicensePlate"
-                    placeholder="ABC-1234"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.carLicensePlate}
-                    onChange={handleChange}
-                    required
+                    minLength={8}
                   />
                 </div>
               </div>
             </div>
             
             <div className="mb-8">
-              <h3 className="text-xl font-bold mb-4">Documents</h3>
+              <h3 className="text-xl font-bold mb-4">Required Documents</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-700 mb-2">Car Photos</label>
-                  <div className="border border-dashed border-gray-300 rounded-lg p-4 text-center">
-                    <FaUpload className="text-gray-400 text-2xl mx-auto mb-2" />
-                    <p className="text-gray-500 mb-2">Upload photos of your car</p>
-                    <p className="text-gray-400 text-sm mb-4">(Exterior and interior)</p>
-                    <input
-                      type="file"
-                      name="carPhotos"
-                      accept="image/*"
-                      multiple
-                      className="hidden"
-                      id="carPhotos"
-                      onChange={handleFileChange}
-                    />
-                    <label
-                      htmlFor="carPhotos"
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer"
-                    >
-                      Choose Files
-                    </label>
-                  </div>
-                </div>
                 <div>
                   <label className="block text-gray-700 mb-2">Driver's License</label>
                   <div className="border border-dashed border-gray-300 rounded-lg p-4 text-center">
@@ -255,6 +202,7 @@ const BecomeRenterPage: React.FC = () => {
                       className="hidden"
                       id="driverLicense"
                       onChange={handleFileChange}
+                      required
                     />
                     <label
                       htmlFor="driverLicense"
@@ -264,7 +212,41 @@ const BecomeRenterPage: React.FC = () => {
                     </label>
                   </div>
                 </div>
+                <div>
+                  <label className="block text-gray-700 mb-2">Renter Documentation</label>
+                  <div className="border border-dashed border-gray-300 rounded-lg p-4 text-center">
+                    <FaFileAlt className="text-gray-400 text-2xl mx-auto mb-2" />
+                    <p className="text-gray-500 mb-2">Upload proof of renter status</p>
+                    <p className="text-gray-400 text-sm mb-4">(Rental certificate, business license, etc.)</p>
+                    <input
+                      type="file"
+                      name="renterDocument"
+                      accept="image/*,application/pdf"
+                      className="hidden"
+                      id="renterDocument"
+                      onChange={handleFileChange}
+                      required
+                    />
+                    <label
+                      htmlFor="renterDocument"
+                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer"
+                    >
+                      Choose File
+                    </label>
+                  </div>
+                </div>
               </div>
+            </div>
+            
+            <div className="mb-6 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
+              <h4 className="font-bold text-blue-800">How the Process Works:</h4>
+              <ol className="list-decimal pl-5 mt-2 text-blue-800">
+                <li className="mb-1">Submit your application with the required documents</li>
+                <li className="mb-1">Our team will review your information (usually within 2-3 business days)</li>
+                <li className="mb-1">If approved, you'll receive an email with payment instructions</li>
+                <li className="mb-1">Complete your subscription payment to activate your account</li>
+                <li>Start listing your cars and earning money!</li>
+              </ol>
             </div>
             
             <button
@@ -277,16 +259,64 @@ const BecomeRenterPage: React.FC = () => {
         </div>
       </div>
       
-      <div className="bg-blue-50 rounded-lg p-8 text-center">
+      <div className="bg-blue-50 rounded-lg p-8">
+        <h2 className="text-2xl font-bold mb-4 text-center">Subscription Plans</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-bold mb-2 text-center">Monthly Plan</h3>
+            <div className="text-center text-3xl font-bold text-blue-500 mb-4">$29.99<span className="text-lg text-gray-500">/month</span></div>
+            <ul className="space-y-2 mb-6">
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>List unlimited cars</span>
+              </li>
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>Access to booking management tools</span>
+              </li>
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>Cancel anytime</span>
+              </li>
+            </ul>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-6 border-2 border-blue-500">
+            <div className="bg-blue-500 text-white text-xs uppercase font-bold py-1 px-3 rounded absolute -mt-9 mx-auto left-0 right-0 w-fit">Popular Choice</div>
+            <h3 className="text-xl font-bold mb-2 text-center">Annual Plan</h3>
+            <div className="text-center text-3xl font-bold text-blue-500 mb-4">$19.99<span className="text-lg text-gray-500">/month</span></div>
+            <div className="text-center text-sm text-green-600 mb-4">Save $120/year</div>
+            <ul className="space-y-2 mb-6">
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>List unlimited cars</span>
+              </li>
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>Access to booking management tools</span>
+              </li>
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>Priority support</span>
+              </li>
+              <li className="flex items-center">
+                <FaCheckCircle className="text-green-500 mr-2" />
+                <span>Featured listings</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div className="bg-blue-50 rounded-lg p-8 text-center mt-16">
         <h2 className="text-2xl font-bold mb-4">Have Questions?</h2>
         <p className="text-gray-600 max-w-2xl mx-auto mb-6">
           Our team is ready to help you with any questions about becoming a car renter on our platform.
         </p>
-       <Link to='/support'>
-       <button  className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition">
-          Contact Support
-        </button>
-       </Link>
+        <Link to='/support'>
+          <button className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition">
+            Contact Support
+          </button>
+        </Link>
       </div>
     </div>
   );

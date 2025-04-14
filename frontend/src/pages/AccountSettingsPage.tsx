@@ -1,675 +1,369 @@
-import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
-import { FiUser, FiMail, FiLock, FiCamera, FiCheck, FiInfo, FiAlertCircle } from 'react-icons/fi';
+import { useState, FormEvent, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FiUser, FiMail, FiPhone, FiLock, FiTrash2, FiSave, FiEdit } from 'react-icons/fi';
+import { useAuth } from '../context/AuthContext';
 
-interface UserProfile {
+// Define interfaces for our component
+interface FormData {
   name: string;
   email: string;
-  profileImage: string;
-  role: string;
-  joinedDate: string;
-  responseRate: number;
-  responseTime: string;
-}
-
-interface PasswordForm {
+  phone: string;
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
 
+interface FormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+  form?: string;
+  delete?: string;
+}
+
 const AccountSettingsPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'preferences'>('profile');
-  const [loading, setLoading] = useState<boolean>(true);
-  const [saving, setSaving] = useState<boolean>(false);
-  const [success, setSuccess] = useState<string>('');
-  const [error, setError] = useState<string>('');
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user, updateUser, deleteAccount } = useAuth();
+  const navigate = useNavigate();
   
-  const [userProfile, setUserProfile] = useState<UserProfile>({
-    name: '',
-    email: '',
-    profileImage: '',
-    role: 'user',
-    joinedDate: '',
-    responseRate: 0,
-    responseTime: 'N/A'
-  });
-
-  const [passwordForm, setPasswordForm] = useState<PasswordForm>({
+  const [formData, setFormData] = useState<FormData>({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
-
-  const [notifications, setNotifications] = useState({
-    email: true,
-    sms: false,
-    app: true,
-    marketing: false,
-    rentalUpdates: true,
-    promotionalOffers: false,
-    newFeatures: true
-  });
-
-  // Simulate fetching user data
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        // In a real app, you would fetch from API
-        // Simulating API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Mock data
-        const userData = {
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          profileImage: 'https://i.pravatar.cc/300',
-          role: 'renter',
-          joinedDate: 'January 15, 2024',
-          responseRate: 98,
-          responseTime: '2 hours'
-        };
-        
-        setUserProfile(userData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-        setError('Failed to load profile data');
-        setLoading(false);
+  
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error for this field when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name as keyof FormErrors];
+        return newErrors;
+      });
+    }
+  };
+  
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+    
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formData.email && !emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    // Phone format validation (optional field)
+    if (formData.phone) {
+      const phoneRegex = /^\d{3}-?\d{3}-?\d{4}$/;
+      if (!phoneRegex.test(formData.phone)) {
+        newErrors.phone = 'Please enter a valid phone number (e.g., 555-123-4567)';
       }
-    };
-
-    fetchUserProfile();
-  }, []);
-
-  const handleProfileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserProfile({
-      ...userProfile,
-      [name]: value
-    });
-  };
-
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPasswordForm({
-      ...passwordForm,
-      [name]: value
-    });
-  };
-
-  const handleNotificationChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setNotifications({
-      ...notifications,
-      [name]: checked
-    });
-  };
-
-  const handleProfileImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      
-      reader.onloadend = () => {
-        setUserProfile({
-          ...userProfile,
-          profileImage: reader.result as string
-        });
-      };
-      
-      reader.readAsDataURL(file);
     }
+    
+    // Password validation (only if user is trying to change password)
+    if (formData.newPassword || formData.confirmPassword) {
+      if (!formData.currentPassword) {
+        newErrors.currentPassword = 'Current password is required to set a new password';
+      }
+      
+      if (formData.newPassword.length < 8) {
+        newErrors.newPassword = 'Password must be at least 8 characters long';
+      }
+      
+      if (formData.newPassword !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match';
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
-
-  const handleProfileSubmit = async (e: FormEvent) => {
+  
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setSaving(true);
-    setError('');
-    setSuccess('');
+    
+    if (!validateForm()) return;
     
     try {
-      // In a real app, you would send data to your API
-      // Simulating API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // This would call your updateUser function from AuthContext
+      await updateUser(formData);
+      setSuccessMessage('Your account has been successfully updated');
+      setIsEditing(false);
       
-      setSuccess('Profile updated successfully!');
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setSuccess('');
-      }, 3000);
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      setError('Failed to update profile');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handlePasswordSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    setError('');
-    setSuccess('');
-    
-    // Validation
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setError('New passwords do not match');
-      setSaving(false);
-      return;
-    }
-    
-    if (passwordForm.newPassword.length < 8) {
-      setError('Password must be at least 8 characters long');
-      setSaving(false);
-      return;
-    }
-    
-    try {
-      // In a real app, you would send data to your API
-      // Simulating API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setSuccess('Password changed successfully!');
-      setPasswordForm({
+      // Clear password fields after successful update
+      setFormData(prev => ({
+        ...prev,
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
-      });
+      }));
       
-      // Clear success message after 3 seconds
+      // Hide success message after 3 seconds
       setTimeout(() => {
-        setSuccess('');
+        setSuccessMessage('');
       }, 3000);
     } catch (error) {
-      console.error('Error updating password:', error);
-      setError('Failed to update password');
-    } finally {
-      setSaving(false);
+      const err = error as Error;
+      setErrors({ form: err.message || 'Failed to update account. Please try again.' });
     }
   };
-
-  const handleNotificationsSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    setError('');
-    setSuccess('');
-    
+  
+  const handleDeleteRequest = (): void => {
+    setShowDeleteConfirm(true);
+  };
+  
+  const handleDeleteConfirm = async (): Promise<void> => {
     try {
-      // In a real app, you would send data to your API
-      // Simulating API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setSuccess('Notification preferences updated!');
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setSuccess('');
-      }, 3000);
+      // This would call your deleteAccount function from AuthContext
+      await deleteAccount();
+      // Navigate to homepage after account deletion
+      navigate('/');
     } catch (error) {
-      console.error('Error updating notification preferences:', error);
-      setError('Failed to update notification preferences');
-    } finally {
-      setSaving(false);
+      const err = error as Error;
+      setErrors({ delete: err.message || 'Failed to delete account. Please try again.' });
+      setShowDeleteConfirm(false);
     }
   };
-
-  const renderProfileTab = () => (
-    <form onSubmit={handleProfileSubmit} className="space-y-6">
-      <div className="flex flex-col items-center md:flex-row md:items-start gap-6 mb-8">
-        <div className="relative">
-          <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200">
-            {userProfile.profileImage ? (
-              <img 
-                src={userProfile.profileImage} 
-                alt="Profile" 
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-blue-100">
-                <FiUser className="text-blue-500 text-4xl" />
+  
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Account Settings</h1>
+        
+        {successMessage && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6 flex items-center">
+            <span className="mr-2">✓</span>
+            {successMessage}
+          </div>
+        )}
+        
+        {errors.form && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+            {errors.form}
+          </div>
+        )}
+        
+        {showDeleteConfirm ? (
+          <div className="bg-red-50 border border-red-200 p-6 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-red-700 mb-4">Delete Account</h2>
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.
+            </p>
+            {errors.delete && (
+              <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+                {errors.delete}
               </div>
             )}
-          </div>
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition"
-          >
-            <FiCamera className="h-5 w-5" />
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleProfileImageChange}
-            className="hidden"
-          />
-        </div>
-        
-        <div className="flex-1 space-y-4 w-full">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FiUser className="text-gray-400" />
-              </div>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={userProfile.name}
-                onChange={handleProfileChange}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Your name"
-              />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={handleDeleteConfirm}
+                className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg font-medium transition-colors duration-200"
+              >
+                Yes, Delete My Account
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-lg font-medium transition-colors duration-200"
+              >
+                Cancel
+              </button>
             </div>
           </div>
-          
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FiMail className="text-gray-400" />
-              </div>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={userProfile.email}
-                onChange={handleProfileChange}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Your email"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Account Statistics */}
-      <div className="bg-gray-50 p-4 rounded-lg mb-6">
-        <h3 className="text-gray-700 font-medium mb-4">Account Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm text-gray-500">Account Type</p>
-            <p className="font-medium">{userProfile.role === 'renter' ? 'Car Renter' : 'Customer'}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Member Since</p>
-            <p className="font-medium">{userProfile.joinedDate}</p>
-          </div>
-          {userProfile.role === 'renter' && (
-            <>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-6">
+              {/* Personal Information Section */}
               <div>
-                <p className="text-sm text-gray-500">Response Rate</p>
-                <p className="font-medium">{userProfile.responseRate}%</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Average Response Time</p>
-                <p className="font-medium">{userProfile.responseTime}</p>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-      
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={saving}
-          className={`px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium shadow-md ${
-            saving ? "opacity-70 cursor-not-allowed" : ""
-          }`}
-        >
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
-      </div>
-    </form>
-  );
-
-  const renderSecurityTab = () => (
-    <form onSubmit={handlePasswordSubmit} className="space-y-6">
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <FiInfo className="h-5 w-5 text-blue-500" />
-          </div>
-          <div className="ml-3">
-            <p className="text-sm text-blue-800">
-              Strong passwords include a mix of letters, numbers, and symbols.
-            </p>
-          </div>
-        </div>
-      </div>
-      
-      <div>
-        <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
-          Current Password
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FiLock className="text-gray-400" />
-          </div>
-          <input
-            type="password"
-            id="currentPassword"
-            name="currentPassword"
-            value={passwordForm.currentPassword}
-            onChange={handlePasswordChange}
-            required
-            className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your current password"
-          />
-        </div>
-      </div>
-      
-      <div>
-        <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
-          New Password
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FiLock className="text-gray-400" />
-          </div>
-          <input
-            type="password"
-            id="newPassword"
-            name="newPassword"
-            value={passwordForm.newPassword}
-            onChange={handlePasswordChange}
-            required
-            minLength={8}
-            className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter new password"
-          />
-        </div>
-        <p className="mt-1 text-sm text-gray-500">Minimum 8 characters</p>
-      </div>
-      
-      <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-          Confirm New Password
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FiLock className="text-gray-400" />
-          </div>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={passwordForm.confirmPassword}
-            onChange={handlePasswordChange}
-            required
-            className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Confirm new password"
-          />
-        </div>
-      </div>
-      
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={saving}
-          className={`px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium shadow-md ${
-            saving ? "opacity-70 cursor-not-allowed" : ""
-          }`}
-        >
-          {saving ? "Updating..." : "Update Password"}
-        </button>
-      </div>
-    </form>
-  );
-
-  const renderPreferencesTab = () => (
-    <form onSubmit={handleNotificationsSubmit} className="space-y-6">
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-800">Notification Settings</h3>
-        <p className="text-gray-600">Choose how you'd like to be notified</p>
-        
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">Email Notifications</h4>
-              <p className="text-sm text-gray-500">Receive email updates about your account activity</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="email"
-                checked={notifications.email} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">SMS Notifications</h4>
-              <p className="text-sm text-gray-500">Receive text messages for important updates</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="sms"
-                checked={notifications.sms} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">In-App Notifications</h4>
-              <p className="text-sm text-gray-500">Receive notifications while using the app</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="app"
-                checked={notifications.app} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">Marketing Communications</h4>
-              <p className="text-sm text-gray-500">Receive marketing and promotional emails</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="marketing"
-                checked={notifications.marketing} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-        </div>
-      </div>
-      
-      <div className="border-t border-gray-200 pt-6 space-y-4">
-        <h3 className="text-lg font-medium text-gray-800">Email Preferences</h3>
-        <p className="text-gray-600">Choose what types of emails you'd like to receive</p>
-        
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">Rental Updates</h4>
-              <p className="text-sm text-gray-500">Booking confirmations, changes, and receipts</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="rentalUpdates"
-                checked={notifications.rentalUpdates} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">Promotional Offers</h4>
-              <p className="text-sm text-gray-500">Discounts and special deals</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="promotionalOffers"
-                checked={notifications.promotionalOffers} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium">New Features & Updates</h4>
-              <p className="text-sm text-gray-500">Information about new platform features</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                name="newFeatures"
-                checked={notifications.newFeatures} 
-                onChange={handleNotificationChange}
-                className="sr-only peer" 
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-            </label>
-          </div>
-        </div>
-      </div>
-      
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={saving}
-          className={`px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium shadow-md ${
-            saving ? "opacity-70 cursor-not-allowed" : ""
-          }`}
-        >
-          {saving ? "Saving..." : "Save Preferences"}
-        </button>
-      </div>
-    </form>
-  );
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-white rounded-xl shadow-md p-8 flex flex-col items-center justify-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-gray-600">Loading your profile...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="bg-blue-500 px-6 py-4">
-            <h1 className="text-white text-2xl font-bold">Account Settings</h1>
-            <p className="text-blue-100 mt-1">
-              Manage your profile and preferences
-            </p>
-          </div>
-          
-          {/* Success/Error Messages */}
-          {success && (
-            <div className="mx-6 mt-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <FiCheck className="h-5 w-5 text-green-500" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm">{success}</p>
+                <h2 className="text-xl font-semibold text-gray-700 mb-4">Personal Information</h2>
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <div className={`flex items-center border ${errors.name ? 'border-red-300' : 'border-gray-300'} rounded-lg overflow-hidden`}>
+                      <div className="bg-gray-100 p-3 text-gray-500">
+                        <FiUser />
+                      </div>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="flex-1 p-3 outline-none disabled:bg-gray-50"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div className={`flex items-center border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-lg overflow-hidden`}>
+                      <div className="bg-gray-100 p-3 text-gray-500">
+                        <FiMail />
+                      </div>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="flex-1 p-3 outline-none disabled:bg-gray-50"
+                        placeholder="Your email address"
+                      />
+                    </div>
+                    {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number (Optional)</label>
+                    <div className={`flex items-center border ${errors.phone ? 'border-red-300' : 'border-gray-300'} rounded-lg overflow-hidden`}>
+                      <div className="bg-gray-100 p-3 text-gray-500">
+                        <FiPhone />
+                      </div>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="flex-1 p-3 outline-none disabled:bg-gray-50"
+                        placeholder="555-123-4567"
+                      />
+                    </div>
+                    {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          
-          {error && (
-            <div className="mx-6 mt-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <FiAlertCircle className="h-5 w-5 text-red-500" />
+              
+              {/* Password Section - Only visible in edit mode */}
+              {isEditing && (
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-700 mb-4">Change Password</h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                      <div className={`flex items-center border ${errors.currentPassword ? 'border-red-300' : 'border-gray-300'} rounded-lg overflow-hidden`}>
+                        <div className="bg-gray-100 p-3 text-gray-500">
+                          <FiLock />
+                        </div>
+                        <input
+                          type="password"
+                          id="currentPassword"
+                          name="currentPassword"
+                          value={formData.currentPassword}
+                          onChange={handleChange}
+                          className="flex-1 p-3 outline-none"
+                          placeholder="Enter your current password"
+                        />
+                      </div>
+                      {errors.currentPassword && <p className="mt-1 text-sm text-red-600">{errors.currentPassword}</p>}
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                      <div className={`flex items-center border ${errors.newPassword ? 'border-red-300' : 'border-gray-300'} rounded-lg overflow-hidden`}>
+                        <div className="bg-gray-100 p-3 text-gray-500">
+                          <FiLock />
+                        </div>
+                        <input
+                          type="password"
+                          id="newPassword"
+                          name="newPassword"
+                          value={formData.newPassword}
+                          onChange={handleChange}
+                          className="flex-1 p-3 outline-none"
+                          placeholder="Enter new password"
+                        />
+                      </div>
+                      {errors.newPassword && <p className="mt-1 text-sm text-red-600">{errors.newPassword}</p>}
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                      <div className={`flex items-center border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-lg overflow-hidden`}>
+                        <div className="bg-gray-100 p-3 text-gray-500">
+                          <FiLock />
+                        </div>
+                        <input
+                          type="password"
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          className="flex-1 p-3 outline-none"
+                          placeholder="Confirm new password"
+                        />
+                      </div>
+                      {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
+                    </div>
+                  </div>
                 </div>
-                <div className="ml-3">
-                  <p className="text-sm">{error}</p>
-                </div>
+              )}
+              
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row justify-between gap-4 pt-4 border-t border-gray-200">
+                {isEditing ? (
+                  <>
+                    <button
+                      type="submit"
+                      className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium transition-colors duration-200"
+                    >
+                      <FiSave className="h-5 w-5" />
+                      Save Changes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(false)}
+                      className="flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-6 rounded-lg font-medium transition-colors duration-200"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(true)}
+                      className="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium transition-colors duration-200"
+                    >
+                      <FiEdit className="h-5 w-5" />
+                      Edit Profile
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDeleteRequest}
+                      className="flex items-center justify-center gap-2 text-red-600 hover:text-red-700 py-2"
+                    >
+                      <FiTrash2 className="h-5 w-5" />
+                      Delete Account
+                    </button>
+                  </>
+                )}
               </div>
             </div>
-          )}
-          
-          {/* Tabs */}
-          <div className="border-b border-gray-200">
-            <div className="flex overflow-x-auto">
-              <button
-                className={`py-4 px-6 font-medium text-sm focus:outline-none ${
-                  activeTab === 'profile'
-                    ? 'border-b-2 border-blue-500 text-blue-600'
-                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-                onClick={() => setActiveTab('profile')}
-              >
-                Profile
-              </button>
-              <button
-                className={`py-4 px-6 font-medium text-sm focus:outline-none ${
-                  activeTab === 'security'
-                    ? 'border-b-2 border-blue-500 text-blue-600'
-                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-                onClick={() => setActiveTab('security')}
-              >
-                Security
-              </button>
-              <button
-                className={`py-4 px-6 font-medium text-sm focus:outline-none ${
-                  activeTab === 'preferences'
-                    ? 'border-b-2 border-blue-500 text-blue-600'
-                    : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-                onClick={() => setActiveTab('preferences')}
-              >
-                Preferences
-              </button>
-            </div>
-          </div>
-          
-          {/* Tab Content */}
-          <div className="p-6">
-            {activeTab === 'profile' && renderProfileTab()}
-            {activeTab === 'security' && renderSecurityTab()}
-            {activeTab === 'preferences' && renderPreferencesTab()}
-          </div>
-        </div>
+          </form>
+        )}
       </div>
     </div>
   );
