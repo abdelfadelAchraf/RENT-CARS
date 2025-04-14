@@ -12,3 +12,9 @@ html{
 button{
     cursor: pointer;
 }
+
+
+  input:required:valid {
+    border-color: green;
+  }
+

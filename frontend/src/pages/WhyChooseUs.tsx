@@ -10,10 +10,16 @@ interface ServiceCardProps {
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
-      <div className="text-blue-500 text-4xl mb-4">{icon}</div>
-      <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center relative overflow-hidden group transition-all duration-300 hover:shadow-lg">
+      {/* Animated background gradient layer */}
+      <div className="absolute inset-0 bg-gradient-to-tl from-transparent to-transparent group-hover:from-blue-300 group-hover:to-blue-300 transition-all duration-500 ease-in-out origin-bottom-right transform scale-0 group-hover:scale-100"></div>
+      
+      {/* Content layer (above the gradient) */}
+      <div className="relative z-10">
+        <div className="text-blue-500 text-4xl mb-4 group-hover:text-blue-600 transition-colors duration-300">{icon}</div>
+        <h3 className="text-xl font-bold mb-2 group-hover:text-blue-800 transition-colors duration-300">{title}</h3>
+        <p className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">{description}</p>
+      </div>
     </div>
   );
 };
@@ -51,7 +57,7 @@ const WhyChooseUs: React.FC = () => {
       description: "Pick up your rental from any of our convenient locations across the country."
     }
   ];
-
+  
   return (
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold text-center mb-4">Our Services</h1>

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiLogOut, FiPlus, FiSettings } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { FaCar } from 'react-icons/fa';
+import { IoSpeedometer } from 'react-icons/io5';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,7 +40,7 @@ const Navbar = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="uppercase text-blue-500 font-bold text-2xl md:text-3xl lg:text-4xl">
-              RENTCARS
+            RENTCARS
             </Link>
             <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full"></div>
           </div>
@@ -53,8 +54,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="uppercase text-blue-500 font-bold text-2xl md:text-3xl lg:text-4xl">
-            RENTCARS
+          <Link to="/" className="uppercase flex items-center justify-center gap-2 text-blue-400 font-bold text-2xl md:text-3xl lg:text-4xl">
+          <IoSpeedometer className='sm:text-3xl lg:text-blue-500 lg:text-6xl ' />  RENTCARS
           </Link>
 
           {/* Desktop Navigation */}
