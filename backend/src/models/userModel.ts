@@ -1,8 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import validator from 'validator';
 
+interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  profileImage: string;
+  role: 'user' | 'renter';
+  joinedDate: Date;
+  responseRate: number;
+  responseTime: string;
+  resetPasswordToken?: string;
+  resetPasswordExpire?: Date;
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUser>({
   name: {
     type: String,
     required: [true, 'Please provide your name'],
@@ -24,7 +37,7 @@ const userSchema = new mongoose.Schema({
   },
   profileImage: {
     type: String,
-    default: 'default-profile.jpg'
+    default: '/images/default-profile.png'
   },
   role: {
     type: String,
@@ -49,5 +62,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const User = mongoose.model('User', userSchema);
+
+
+const User: Model<IUser> = mongoose.model('User', userSchema);
 export default User;

@@ -1,12 +1,14 @@
 // src/context/AuthContext.tsx
 import { createContext, useEffect, useContext, ReactNode, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError, AxiosProgressEvent } from 'axios';
 
 // Define types
 interface User {
   id: string;
   name: string;
   email: string;
+  role: string;
+  profileImage: string;
   // Add other user properties as needed
 }
 
@@ -14,6 +16,12 @@ interface RegisterData {
   name: string;
   email: string;
   password: string;
+  role?: 'user' | 'renter';
+}
+
+interface UpdateUserData {
+  name?: string;
+  email?: string;
 }
 
 interface AuthContextType {
@@ -23,6 +31,10 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; message?: string }>;
   register: (userData: RegisterData) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
+  updateUser: (userData: UpdateUserData) => Promise<{ success: boolean; message?: string; user?: User }>;
+  updateProfileImage: (file: File, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) => Promise<{ success: boolean; message?: string; user?: User }>;
+  deleteAccount: () => Promise<{ success: boolean; message?: string }>;
+  getMe: () => Promise<{ success: boolean; message?: string; user?: User }>;
 }
 
 interface AuthProviderProps {
@@ -78,9 +90,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, [token, user]);
 
-  // No need for verifyToken function if the API endpoint doesn't exist
-  // Instead, we'll rely on the stored user data and token
-
   const login = async (email: string, password: string) => {
     try {
       const response = await axios.post<{ token: string; user: User }>(
@@ -93,7 +102,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(response.data.user);
         setIsAuthenticated(true);
         
-        // Store in localStorage for persistence
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         
@@ -104,10 +112,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         success: false, 
         message: 'Login failed: Invalid response from server' 
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
       return {
         success: false,
-        message: error.response?.data?.message || 'Login failed'
+        message: axiosError.response?.data?.message || 'Login failed'
       };
     }
   };
@@ -120,10 +129,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       );
 
       return { success: true, message: response.data.message };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
       return {
         success: false,
-        message: error.response?.data?.message || 'Registration failed'
+        message: axiosError.response?.data?.message || 'Registration failed'
       };
     }
   };
@@ -136,8 +146,118 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsAuthenticated(false);
   };
 
+  const getMe = async () => {
+    try {
+      const response = await axios.get<{ user: User }>('/api/auth/me');
+      setUser(response.data.user);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      return { success: true, user: response.data.user };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      return {
+        success: false,
+        message: axiosError.response?.data?.message || 'Failed to fetch user data'
+      };
+    }
+  };
+
+  const updateUser = async (userData: UpdateUserData) => {
+    try {
+      const response = await axios.put<{ user: User }>(
+        '/api/auth/update',
+        userData
+      );
+
+      setUser(response.data.user);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      
+      return { 
+        success: true, 
+        user: response.data.user,
+        message: 'Profile updated successfully' 
+      };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      return {
+        success: false,
+        message: axiosError.response?.data?.message || 'Failed to update profile'
+      };
+    }
+  };
+
+  const updateProfileImage = async (file: File, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) => {
+    try {
+      const formData = new FormData();
+      formData.append('profileImage', file);
+
+      const response = await axios.put<{ user: User }>(
+        '/api/auth/update-image',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          onUploadProgress
+        }
+      );
+
+      setUser(response.data.user);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      
+      return { 
+        success: true, 
+        user: response.data.user,
+        message: 'Profile image updated successfully' 
+      };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      return {
+        success: false,
+        message: axiosError.response?.data?.message || 'Failed to update profile image'
+      };
+    }
+  };
+
+// src/context/AuthContext.tsx
+
+const deleteAccount = async () => {
+  try {
+    const response = await axios.delete('/api/auth/delete');
+    
+    if (response.data.success) {
+      logout(); // Clear user data after deletion
+      return { 
+        success: true, 
+        message: response.data.message || 'Account and all associated cars deleted successfully' 
+      };
+    } else {
+      return {
+        success: false,
+        message: response.data.message || 'Failed to delete account'
+      };
+    }
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<{ message?: string }>;
+    return {
+      success: false,
+      message: axiosError.response?.data?.message || 'Failed to delete account'
+    };
+  }
+};
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated, 
+      loading, 
+      login, 
+      register, 
+      logout,
+      updateUser,
+      updateProfileImage,
+      deleteAccount,
+      getMe
+    }}>
       {children}
     </AuthContext.Provider>
   );

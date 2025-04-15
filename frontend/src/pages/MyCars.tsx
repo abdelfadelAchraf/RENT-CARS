@@ -2,61 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEdit2, FiTrash2, FiPlus, FiAlertCircle, FiCheck, FiX } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
-import { useCars, Car } from '../context/CarContext'; // Import the actual Car type
-import axios from 'axios';
+import { useCars } from '../context/CarContext';
 
-// Update AlertMessage interface if needed
+// Alert message interface
 interface AlertMessage {
   type: 'success' | 'error';
   text: string;
 }
 
 const MyCars: React.FC = () => {
-  const { user } = useAuth(); // Uncomment to get the current user
-  const { fetchCars } = useCars(); // Use the car context
-  const [userCars, setUserCars] = useState<Car[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null); // Change to string for _id
+  const { user } = useAuth();
+  const { userCars, loading, error, fetchUserCars, fetchCars, deleteCar, updateCarAvailability } = useCars();
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [alertMessage, setAlertMessage] = useState<AlertMessage | null>(null);
 
   useEffect(() => {
-    // Fetch cars owned by the current user
-    const fetchUserCars = async (): Promise<void> => {
+    let isMounted = true;
+    
+    const loadData = async () => {
       try {
-        setLoading(true);
-        // Updated endpoint to fetch only the current user's cars
-        const response = await axios.get('/api/cars/user/mycars');
-        
-        if (response.data.success) {
-          setUserCars(response.data.data);
-        } else {
-          setError('Failed to load your cars');
+        if (user) {
+          await fetchUserCars();
         }
-        setLoading(false);
       } catch (err) {
-        setError('Failed to load your cars. Please try again later.');
-        setLoading(false);
+        if (isMounted) {
+          console.error("Failed to load user cars:", err);
+        }
       }
     };
-
-    // Only fetch if user is authenticated
-    if (user) {
-      fetchUserCars();
-    } else {
-      setError('You must be logged in to view your cars');
-      setLoading(false);
-    }
-  }, [user]); // Add user as dependency to refetch when user changes
+  
+    loadData();
+  
+    return () => {
+      isMounted = false;
+    };
+  }, [user]); // Only depend on user
 
   const handleDeleteCar = async (id: string): Promise<void> => {
     try {
-      // Delete the car with the actual API endpoint
-      const response = await axios.delete(`/api/cars/${id}`);
+      const success = await deleteCar(id);
       
-      if (response.data.success) {
-        // Remove car from state
-        setUserCars(userCars.filter(car => car._id !== id));
+      if (success) {
         setDeleteConfirm(null);
         
         // Refresh the car list in context
@@ -68,7 +54,7 @@ const MyCars: React.FC = () => {
           text: 'Car successfully deleted'
         });
       } else {
-        throw new Error(response.data.message || 'Failed to delete car');
+        throw new Error('Failed to delete car');
       }
       
       // Clear alert after 3 seconds
@@ -84,27 +70,18 @@ const MyCars: React.FC = () => {
 
   const toggleAvailability = async (id: string, currentStatus: boolean): Promise<void> => {
     try {
-      // Update car availability with the actual API endpoint
-      const response = await axios.patch(`/api/cars/${id}/availability`, {
+      const updatedCar = await updateCarAvailability(id, {
         isAvailable: !currentStatus
       });
       
-      if (response.data.success) {
-        // Update car in state
-        setUserCars(userCars.map(car => 
-          car._id === id ? { ...car, isAvailable: !currentStatus } : car
-        ));
-        
-        // Refresh the car list in context
-        fetchCars();
-        
+      if (updatedCar) {
         // Show success message
         setAlertMessage({
           type: 'success',
           text: `Car is now ${!currentStatus ? 'available' : 'unavailable'} for rent`
         });
       } else {
-        throw new Error(response.data.message || 'Failed to update availability');
+        throw new Error('Failed to update availability');
       }
       
       // Clear alert after 3 seconds
@@ -246,8 +223,8 @@ const MyCars: React.FC = () => {
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center">
                     <span className="text-yellow-400 mr-1">★</span>
-                    <span className="text-gray-700">{car.rating.toFixed(1)}</span>
-                    <span className="text-gray-500 text-sm ml-1">({car.reviewCount} reviews)</span>
+                    <span className="text-gray-700">{car.reviewCount ? (car.reviewCount > 0 ? '4.5' : '0.0') : '0.0'}</span>
+                    <span className="text-gray-500 text-sm ml-1">({car.reviewCount || 0} reviews)</span>
                   </div>
                 </div>
 

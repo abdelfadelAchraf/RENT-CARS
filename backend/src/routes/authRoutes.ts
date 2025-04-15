@@ -1,13 +1,29 @@
+// 
+
 import express from 'express';
-import {  deleteUser, login, register, updateUser } from '../controllers/authController';
 import { protect } from '../middleware/authMiddleware';
-const authRoutes = express.Router();
+import { 
+  register, 
+  login, 
+  getMe, 
+  updateUser, 
+  deleteUser,
+  updateProfileImage,
+  logout
+} from '../controllers/authController';
+import { upload } from '../config/cloudinary';
 
-// Routes
-authRoutes.post('/register', register);
-authRoutes.post('/login', login);
-// Routes to update and delete user
-authRoutes.put('/:id', protect, updateUser);
-authRoutes.delete('/:id', protect, deleteUser);
+const router = express.Router();
 
-export default authRoutes;
+// Public routes
+router.post('/register', register);
+router.post('/login', login);
+
+// Protected routes
+router.get('/me', protect, getMe);
+router.put('/update', protect, updateUser);
+router.put('/update-image', protect, upload.single('profileImage'), updateProfileImage);
+router.delete('/delete', protect, deleteUser);
+router.post('/logout', protect, logout);
+
+export default router;

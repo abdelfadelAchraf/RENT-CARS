@@ -10,7 +10,7 @@ import authRoutes from './routes/authRoutes';
 // Load environment variables
 import 'dotenv/config'
 import carRoutes from './routes/carRoutes';
-import userRoutes from './routes/userRouter';
+// import userRoutes from './routes/userRouter';
 import imageRoutes from './routes/imageRoutes';
 
 
@@ -21,6 +21,7 @@ const app: Express = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -36,7 +37,7 @@ connectDB(MONGO_DB_URI);
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
 // Add routes to the app
-app.use('/api/users', userRoutes);
+// app.use('/api/users', userRoutes);
 app.use('/api/images', imageRoutes);
 
 

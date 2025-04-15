@@ -81,9 +81,10 @@ const Navbar = () => {
                   className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors duration-200"
                 >
                   {user.name && (
-                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
+                    <img 
+                    className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium"
+                      src={user.profileImage}
+                    />
                   )}
                   <span className="font-medium text-gray-800">{user.name}</span>
                 </button>

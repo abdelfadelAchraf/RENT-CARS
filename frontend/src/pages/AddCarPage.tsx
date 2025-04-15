@@ -1,13 +1,12 @@
-// src/pages/AddCarPage.tsx
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import { useCars } from '../context/CarContext';
 
 const AddCarPage: React.FC = () => {
   const { user } = useAuth();
+  const { addCar, loading, error: contextError } = useCars();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
@@ -102,10 +101,9 @@ const AddCarPage: React.FC = () => {
     setImagePreviewUrls(updatedPreviewUrls);
   };
 
-  // Handle form submission - MODIFIED VERSION
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError(null);
 
     try {
@@ -116,10 +114,6 @@ const AddCarPage: React.FC = () => {
 
       // Create form data with all car information and images
       const carFormData = new FormData();
-      
-      // Generate a unique ID based on name and current timestamp
-      const carId = `${formData.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`;
-      carFormData.append('id', carId);
       
       // Add all basic car fields
       carFormData.append('name', formData.name);
@@ -149,27 +143,18 @@ const AddCarPage: React.FC = () => {
         carFormData.append('images', image);
       });
       
-      // Submit everything in one request
-      console.log('Submitting car data...');
-      const response = await axios.post('/api/cars', carFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      // Submit car data using the context
+      const result = await addCar(carFormData);
       
-      console.log('Car creation response:', response.data);
-      
-      if (response.data.success) {
+      if (result) {
         // Redirect to car listing or dashboard
         navigate('/rental-deals');
       } else {
-        throw new Error(response.data.message || 'Failed to add car');
+        throw new Error(contextError || 'Failed to add car');
       }
     } catch (err: any) {
       console.error('Error adding car:', err);
       setError(err.message || 'Failed to add car. Please try again.');
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -177,9 +162,9 @@ const AddCarPage: React.FC = () => {
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-6">Add Your Vehicle</h1>
       
-      {error && (
+      {(error || contextError) && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+          {error || contextError}
         </div>
       )}
 
@@ -490,10 +475,10 @@ const AddCarPage: React.FC = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={isLoading}
-            className={`bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            disabled={loading}
+            className={`bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            {isLoading ? 'Submitting...' : 'Add Car'}
+            {loading ? 'Submitting...' : 'Add Car'}
           </button>
         </div>
       </form>

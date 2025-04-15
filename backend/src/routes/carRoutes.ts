@@ -8,22 +8,25 @@ import {
   getUserCars,
   updateCarAvailability 
 } from '../controllers/carController';
-import { protect } from '../middleware/authMiddleware';
+import { protect, authorize } from '../middleware/authMiddleware';
 import { upload } from '../config/cloudinary';
 
 const carRoutes = express.Router();
 
-// Public routes
+
 carRoutes.get('/', getAllCars);
+
 carRoutes.get('/:id', getCar);
 
-// Protected routes with image upload
-carRoutes.post('/', protect, upload.array('images', 5), createCar);
-carRoutes.put('/:id', protect, upload.array('images', 5), updateCar);
-carRoutes.delete('/:id', protect, deleteCar);
+// authorize('renter', 'admin'),
+carRoutes.post('/', protect,  upload.array('images', 5), createCar);
 
-// New routes for MyCars functionality
-carRoutes.get('/user/mycars', protect, getUserCars);
-carRoutes.patch('/:id/availability', protect, updateCarAvailability);
+carRoutes.put('/:id', protect, authorize('renter', 'admin'), upload.array('images', 5), updateCar);
+
+carRoutes.delete('/:id', protect, authorize('renter', 'admin'), deleteCar);
+
+carRoutes.get('/user/mycars', protect,  getUserCars); //authorize('renter', 'admin'),
+
+carRoutes.patch('/:id/availability', protect, authorize('renter', 'admin'), updateCarAvailability);
 
 export default carRoutes;

@@ -1,17 +1,15 @@
-// pages/RentalDealsPage.tsx
 import React, { useState, useEffect } from 'react';
 import {
   FaStar, FaUsers, FaCar, FaSnowflake, FaDoorOpen, FaFilter, FaSearch,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useCars, Car } from '../context/CarContext'; // Import the Car type
+import { useCars, Car } from '../context/CarContext';
 
-// Update CarCard to match the Car type from context
 const CarCard: React.FC<Car> = ({
   id,
   name,
   images,
-  rating,
+  // rating,
   reviewCount,
   passengers,
   transmission,
@@ -29,7 +27,7 @@ const CarCard: React.FC<Car> = ({
           <h3 className="text-xl font-bold mb-2">{name}</h3>
           <div className="flex items-center mb-4">
             <FaStar className="text-yellow-400 mr-1" />
-            <span className="font-bold mr-1">{rating}</span>
+            {/* <span className="font-bold mr-1">{rating}</span> */}
             <span className="text-gray-500 text-sm">({reviewCount} reviews)</span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4">
@@ -71,17 +69,24 @@ const CarCard: React.FC<Car> = ({
 const RentalDealsPage: React.FC = () => {
   const { cars, loading, error, fetchCars } = useCars();
   const [searchTerm, setSearchTerm] = useState('');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]); // Initialize with wider range
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [sortOption, setSortOption] = useState<string>('price-low');
 
   // Get unique categories from cars
   const allCategories = ['All', ...new Set(cars.map(car => car.category))];
 
-  // Re-fetch cars when component mounts
+  // Calculate max price when cars are loaded
   useEffect(() => {
     fetchCars();
   }, []);
+
+  useEffect(() => {
+    if (cars.length > 0) {
+      const maxCarPrice = Math.max(...cars.map(car => car.price));
+      setPriceRange([0, Math.ceil(maxCarPrice)]);
+    }
+  }, [cars]);
 
   // Filter and sort cars
   const filteredCars = cars
@@ -99,16 +104,30 @@ const RentalDealsPage: React.FC = () => {
         case 'price-high':
           return b.price - a.price;
         case 'rating':
-          return b.rating - a.rating;
+          // return (b.rating || 0) - (a.rating || 0);
         default:
           return a.price - b.price;
       }
     });
 
-  // Find max price in cars for price range
   const maxPrice = cars.length > 0 
     ? Math.ceil(Math.max(...cars.map(car => car.price)))
-    : 100;
+    : 1000;
+
+  const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const value = parseInt(e.target.value);
+    const newRange = [...priceRange] as [number, number];
+    newRange[index] = value;
+    
+    // Ensure min <= max
+    if (index === 0 && value > priceRange[1]) {
+      newRange[1] = value;
+    } else if (index === 1 && value < priceRange[0]) {
+      newRange[0] = value;
+    }
+    
+    setPriceRange(newRange);
+  };
 
   if (loading) {
     return (
@@ -179,21 +198,31 @@ const RentalDealsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Price Filter */}
+            {/* Price Filter - Improved */}
             <div className="mb-6">
               <h3 className="font-medium mb-2">Price Range</h3>
               <div className="flex justify-between mb-2">
                 <span>${priceRange[0]}</span>
                 <span>${priceRange[1]}</span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max={maxPrice}
-                // value={priceRange[1]}
-                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                className="w-full"
-              />
+              <div className="space-y-4">
+                {/* <input
+                  type="range"
+                  min="0"
+                  max={maxPrice}
+                  value={priceRange[0]}
+                  onChange={(e) => handlePriceRangeChange(e, 0)}
+                  className="w-full"
+                /> */}
+                <input
+                  type="range"
+                  min="0"
+                  max={maxPrice}
+                  value={priceRange[1]}
+                  onChange={(e) => handlePriceRangeChange(e, 1)}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* Clear Filters */}
