@@ -58,6 +58,7 @@ const AccountSettingsPage = () => {
         ...prev,
         name: user.name || '',
         email: user.email || '',
+        phone:user.phone
       }));
       if (user.profileImage) {
         setImagePreview(user.profileImage);

@@ -256,7 +256,7 @@ const generateToken = (id: string): string => {
 // @access  Public
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role , phone } = req.body;
 
     // Validation
     if (!name || !email || !password) {
@@ -280,8 +280,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       name,
       email,
       password: hashedPassword,
-      role: role || 'user'
-    }) as { _id: string; name: string; email: string; role: string; profileImage?: string };
+      role: role || 'user' , 
+      phone
+    }) as { _id: string; name: string; email: string; role: string; profileImage?: string ; phone: string };
 
     // Generate token
     const token = generateToken(user._id.toString());

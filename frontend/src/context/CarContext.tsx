@@ -30,6 +30,7 @@ export interface Car {
   description: string;
   features: string[];
   specs: CarSpecs;
+  rating: number;
   owner: {
     _id: string;
     name: string;
@@ -85,7 +86,7 @@ export const CarProvider: React.FC<CarProviderProps> = ({ children }) => {
   const [userCars, setUserCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
+  const carCache: Record<string, Car> = {};
   // Fetch cars from API with optional filters
   const fetchCars = async (filters?: Record<string, any>) => {
     setLoading(true);
@@ -150,29 +151,37 @@ export const CarProvider: React.FC<CarProviderProps> = ({ children }) => {
       setLoading(false);
     }
   };
+
+  
   // Get a single car by ID
   const getCar = async (id: string): Promise<Car | null> => {
+    // Check cache first
+    if (carCache[id]) {
+      return carCache[id];
+    }
+  
     setLoading(true);
     setError(null);
+    const cleanId = id.trim();
+    console.log("Fetching car with ID:", cleanId); // Debug log
+
     try {
-      const cleanId = id.trim();
-      console.log("ID being sent:", cleanId); // Check if this matches Postman
-  
+    
       const response = await axios.get(`/api/cars/${cleanId}`);
-      console.log("API Response:", response.data); // Debug response structure
-  
+      
       if (response.data?.success) {
-        return response.data.data; // Ensure this matches your API response
+        // Cache the result
+        carCache[id] = response.data.data;
+        return response.data.data;
       } else {
         setError(response.data?.message || "Car not found");
         return null;
       }
     } catch (err: any) {
-      console.error("Error details:", {
+      console.error("Error fetching car:", {
         message: err.message,
         response: err.response?.data,
       });
-  
       setError(err.response?.data?.message || err.message || "Failed to fetch car");
       return null;
     } finally {

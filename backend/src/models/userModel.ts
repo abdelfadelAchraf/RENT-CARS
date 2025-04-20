@@ -1,11 +1,11 @@
 import mongoose, { Document, Model } from 'mongoose';
 import validator from 'validator';
-
 interface IUser extends Document {
   name: string;
   email: string;
   password: string;
   profileImage: string;
+  phone: string;
   role: 'user' | 'renter';
   joinedDate: Date;
   responseRate: number;
@@ -35,9 +35,14 @@ const userSchema = new mongoose.Schema<IUser>({
     minlength: [8, 'Password must be at least 8 characters'],
     select: false
   },
+  phone: {
+    type: String,
+    required: false
+
+  },
   profileImage: {
     type: String,
-    default: '/images/default-profile.png'
+    default: ""
   },
   role: {
     type: String,
@@ -55,7 +60,7 @@ const userSchema = new mongoose.Schema<IUser>({
   responseTime: {
     type: String,
     default: 'N/A'
-  }, 
+  },
   resetPasswordToken: String,
   resetPasswordExpire: Date
 }, {
