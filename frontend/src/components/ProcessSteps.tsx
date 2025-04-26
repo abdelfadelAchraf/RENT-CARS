@@ -40,7 +40,7 @@ const ProcessSteps: React.FC<ProcessStepsProps> = ({
     <div className={`flex  gap-6  py-10 ${className}`}>
       {/* Subtitle */}
       <div className="flex items-center">
-        <h2 className="bg-blue-100 rounded-lg w-fit py-2 px-4 uppercase text-blue-600 font-medium text-sm">
+        <h2 className="bg-blue-100 rounded-lg w-fit text-2xl py-2 px-4 uppercase text-blue-600 font-medium">
           {subtitle}
         </h2>
       </div>

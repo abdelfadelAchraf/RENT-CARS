@@ -5,7 +5,7 @@ import { FaStar, FaUsers, FaCar, FaSnowflake, FaDoorOpen } from 'react-icons/fa'
 import { Car } from '../context/CarContext';
 
 const CarCard: React.FC<Car> = ({
-  id,
+  _id,
   name,
   images,
   rating,
@@ -31,7 +31,7 @@ const CarCard: React.FC<Car> = ({
           <div className="flex items-center mb-4">
             <FaStar className="text-yellow-400 mr-1" />
             <span className="font-bold mr-1">{rating}</span>
-            <span className="text-gray-500 text-sm">({reviewCount} reviews)</span>
+            <span className="text-gray-500 text-sm">  ({Math.floor(Math.random() * 100 + 1)} reviews)</span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="flex items-center">
@@ -57,10 +57,10 @@ const CarCard: React.FC<Car> = ({
         <div className="flex justify-between items-center mt-4">
           <div>
             <p className="text-sm text-gray-500">Price</p>
-            <p className="font-bold text-xl">${price}<span className="text-gray-500 text-sm">/day</span></p>
+            <p className="font-bold text-xl">{price}MAD<span className="text-gray-500 text-sm">/day</span></p>
           </div>
           <Link
-            to={`/rent/${id}`}
+            to={`/rent/${_id}`}
             className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600 transition"
           >
             Rent Now <span className="ml-1">→</span>

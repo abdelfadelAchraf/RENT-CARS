@@ -3,7 +3,7 @@ import CarCard from './CarCard';
 import { useCars } from '../context/CarContext';
 import LoadingSpinner from './ui/LoadingSpinner';
 import { Link } from 'react-router-dom';
-import { BiArrowToRight, BiToggleRight } from 'react-icons/bi';
+import { BiArrowToRight } from 'react-icons/bi';
 
 const PopularCarsPage: React.FC = () => {
   const { popularCars, loading, error } = useCars();
@@ -34,7 +34,7 @@ const PopularCarsPage: React.FC = () => {
       {popularCars.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {popularCars.map((car) => (
-            <CarCard key={car.id} {...car} />
+            <CarCard key={car._id} {...car} />
           ))}
           <Link to="/rental-deals" className="col-span-1 md:col-span-2 lg:col-span-4 text-center mt-6">
             <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-200">

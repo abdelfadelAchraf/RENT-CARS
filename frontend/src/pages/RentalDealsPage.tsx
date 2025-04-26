@@ -233,7 +233,7 @@ const RentalDealsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Filters Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
+          <div className="bg-white rounded-lg shadow-md p-6 sticky top-28">
             <h2 className="text-xl font-bold mb-4 flex items-center">
               <FaFilter className="mr-2" /> Filters
             </h2>
