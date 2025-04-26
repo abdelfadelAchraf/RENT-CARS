@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   FaStar, FaUsers, FaCar, FaSnowflake, FaDoorOpen, 
-  FaFilter, FaSearch, FaChevronLeft, FaTimes
+  FaFilter, FaSearch, FaTimes
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useCars, Car } from '../context/CarContext';
@@ -23,9 +23,9 @@ const CarCard: React.FC<CarCardProps> = ({
   price,
 }) => {
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('fr-MA', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'MAD',
       maximumFractionDigits: 0
     }).format(price);
   };

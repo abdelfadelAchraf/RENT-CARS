@@ -241,7 +241,7 @@ const RentalDetailsPage: React.FC = () => {
             
             <div className="border-t border-b py-4 my-4">
               <p className="text-gray-500 text-sm mb-1">Price per day</p>
-              <p className="text-3xl font-bold">${car.price}</p>
+              <p className="text-3xl font-bold">{car.price} MAD</p>
             </div>
             
             <button

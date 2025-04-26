@@ -67,7 +67,7 @@ const HomePage = () => {
 
 
       <hr className='border-t border-gray-200 my-6' />
-      <div className='flex flex-col sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
+      <div className='flex flex-col px-20 sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
         <div className='w-full'>
           <img
             src={car1}
