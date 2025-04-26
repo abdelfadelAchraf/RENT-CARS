@@ -213,7 +213,7 @@ const MyCars: React.FC = () => {
                 </h3>
 
                 <div className="flex items-center text-gray-700 mb-3">
-                  <span className="text-lg font-semibold text-blue-500">${car.price}</span>
+                  <span className="text-lg font-semibold text-blue-500">{car.price}DH</span>
                   <span className="ml-1 text-gray-500">/day</span>
                 </div>
                 <div className="flex items-center text-gray-600 mb-4">

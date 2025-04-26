@@ -2,6 +2,8 @@ import React from 'react';
 import CarCard from './CarCard';
 import { useCars } from '../context/CarContext';
 import LoadingSpinner from './ui/LoadingSpinner';
+import { Link } from 'react-router-dom';
+import { BiArrowToRight, BiToggleRight } from 'react-icons/bi';
 
 const PopularCarsPage: React.FC = () => {
   const { popularCars, loading, error } = useCars();
@@ -34,6 +36,12 @@ const PopularCarsPage: React.FC = () => {
           {popularCars.map((car) => (
             <CarCard key={car.id} {...car} />
           ))}
+          <Link to="/rental-deals" className="col-span-1 md:col-span-2 lg:col-span-4 text-center mt-6">
+            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 transition duration-200">
+              View All Cars
+              <BiArrowToRight className="inline-block ml-2" size={20} />
+            </button>
+            </Link>
         </div>
       ) : (
         <div className="text-center py-8 flex items-center justify-center flex-col">

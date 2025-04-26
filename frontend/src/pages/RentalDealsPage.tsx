@@ -112,7 +112,7 @@ const RentalDealsPage: React.FC = () => {
     if (searchTerm) filters.push(`Search: "${searchTerm}"`);
     if (selectedCategory && selectedCategory !== 'All') filters.push(`Category: ${selectedCategory}`);
     if (priceRange[0] > 0 || priceRange[1] < 1000) {
-      filters.push(`Price: $${priceRange[0]} - $${priceRange[1]}`);
+      filters.push(`Price: ${priceRange[0]}DH - ${priceRange[1]}DH`);
     }
     setActiveFilters(filters);
   }, [searchTerm, selectedCategory, priceRange]);
@@ -276,8 +276,8 @@ const RentalDealsPage: React.FC = () => {
             <div className="mb-6">
               <h3 className="font-medium mb-2">Price Range</h3>
               <div className="flex justify-between mb-2">
-                <span>${priceRange[0]}</span>
-                <span>${priceRange[1]}</span>
+                <span>{priceRange[0]}DH</span>
+                <span>{priceRange[1]}DH</span>
               </div>
               <div className="space-y-4">
                 <div>
