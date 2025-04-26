@@ -22,6 +22,7 @@ import MyCars from './pages/MyCars';
 import ForgotPassword from './pages/ForgotPassword';
 import LoadingPage from './components/ui/LoadingPage ';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import EditCarPage from './pages/EditCarPage';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -68,6 +69,7 @@ const App: React.FC = () => {
           <Route path="/add-car" element={<AddCarPage />} />
           <Route path="/profile" element={<AccountSettingsPage />} />
           <Route path="/my-cars" element={<MyCars />} />
+          <Route path="/edit-car/:id" element={<EditCarPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

@@ -253,7 +253,7 @@ const RentalDetailsPage: React.FC = () => {
             
             <button 
               onClick={handleContactOwner}
-              className="border border-gray-300 w-full py-3 rounded-md text-center block font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2"
+              className="border border-gray-300 w-full py-3 rounded-md text-center  font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2"
             >
               <FaPhone /> Contact Owner
             </button>

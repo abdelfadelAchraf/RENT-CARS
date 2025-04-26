@@ -240,7 +240,7 @@ const RentalDealsPage: React.FC = () => {
 
             {/* Search Filter */}
             <div className="mb-6">
-              <label className="block font-medium mb-2 flex items-center">
+              <label className=" font-medium mb-2 flex items-center">
                 <FaSearch className="mr-2 text-gray-500" /> Search
               </label>
               <input
