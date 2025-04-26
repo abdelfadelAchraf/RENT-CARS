@@ -1,4 +1,3 @@
-// backend/src/server.ts
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -6,12 +5,9 @@ import connectDB from './config/connectDb';
 import path from 'path';
 // // Import routes
 import authRoutes from './routes/authRoutes';
-// import carRoutes from './routes/carRoutes';
 // Load environment variables
 import 'dotenv/config'
 import carRoutes from './routes/carRoutes';
-// import userRoutes from './routes/userRouter';
-import imageRoutes from './routes/imageRoutes';
 
 
 // Initialize express app
@@ -36,9 +32,6 @@ connectDB(MONGO_DB_URI);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
-// Add routes to the app
-// app.use('/api/users', userRoutes);
-app.use('/api/images', imageRoutes);
 
 
 
