@@ -12,6 +12,7 @@ const SignUpPage: React.FC = () => {
     lastName: '',
     email: '',
     role: 'user' as 'user' | 'renter',
+  
     phone: '',
     password: '',
     confirmPassword: '',
@@ -22,8 +23,14 @@ const SignUpPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // New state for email verification
+  const [showVerificationStep, setShowVerificationStep] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationError, setVerificationError] = useState('');
 
-  const { register } = useAuth();
+  const { register, sendVerificationCode, verifyEmail, resendVerificationCode } = useAuth();
   const navigate = useNavigate();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -94,30 +101,155 @@ const SignUpPage: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      const { firstName, lastName, role, email, password, phone } = formData;
+      // First, send a verification code to the user's email
+      const verificationResult = await sendVerificationCode(formData.email);
       
-      const result = await register({
-        name: `${firstName} ${lastName}`,
-        email,
-        password,
-        role,
-        ...(phone && { phone }) // Only include phone if it exists
-      });
-      
-      if (result.success) {
-        toast.success('Registration successful! You can now sign in.');
-        navigate('/signin');
+      if (verificationResult.success) {
+        toast.success('Verification code sent to your email');
+        setShowVerificationStep(true);
       } else {
-        toast.error(result.message || 'Registration failed. Please try again.');
+        toast.error(verificationResult.message || 'Failed to send verification code');
       }
     } catch (error) {
       toast.error('An unexpected error occurred. Please try again.');
-      console.error('Registration error:', error);
+      console.error('Verification request error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleVerifyAndRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!verificationCode.trim()) {
+      setVerificationError('Please enter the verification code');
+      return;
+    }
+    
+    setIsVerifying(true);
+    setVerificationError('');
+    
+    try {
+      // Verify the email with the code
+      const verificationResult = await verifyEmail(formData.email, verificationCode);
+      console.log('Verification result:', verificationResult);
+      if (verificationResult.success && verificationResult.verified) {
+        // If verification is successful, register the user
+        const { firstName, lastName, role, email, password, phone } = formData;
+        console.log(formData)
+        const registrationResult = await register({
+          name: `${firstName} ${lastName}`,
+          email,
+          password,
+          role,
+          
+          ...(phone && { phone }),
+          isVerified: true // Set isVerified to true after successful verification
+        });
+        console.log("the registrationResult:",registrationResult)
+        
+        if (registrationResult.success) {
+          toast.success('Registration successful! You can now sign in.');
+          navigate('/signin');
+        } else {
+          toast.error(registrationResult.message || 'Registration failed. Please try again.');
+        }
+      } else {
+        setVerificationError(verificationResult.message || 'Invalid verification code');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.');
+      console.error('Verification/Registration error:', error);
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      const result = await resendVerificationCode(formData.email);
+      
+      if (result.success) {
+        toast.success('New verification code sent to your email');
+      } else {
+        toast.error(result.message || 'Failed to resend verification code');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.');
+      console.error('Resend verification error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Render verification step
+  if (showVerificationStep) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-md overflow-hidden p-8">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-extrabold text-gray-900">Verify Your Email</h1>
+            <p className="mt-2 text-sm text-gray-600">
+              Enter the verification code sent to {formData.email}
+            </p>
+          </div>
+
+          <form onSubmit={handleVerifyAndRegister} className="space-y-6">
+            <div>
+              <label htmlFor="verificationCode" className="block text-sm font-medium text-gray-700 mb-1">
+                Verification Code
+              </label>
+              <input
+                id="verificationCode"
+                name="verificationCode"
+                type="text"
+                placeholder="Enter 6-digit code"
+                className={`block w-full px-3 py-2 border ${verificationError ? 'border-red-300' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+              />
+              {verificationError && <p className="mt-1 text-sm text-red-600">{verificationError}</p>}
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isVerifying}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isVerifying ? 'opacity-70 cursor-not-allowed' : ''}`}
+              >
+                {isVerifying ? 'Verifying...' : 'Verify & Complete Registration'}
+              </button>
+            </div>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={handleResendCode}
+                disabled={isSubmitting}
+                className="text-sm font-medium text-blue-600 hover:text-blue-500"
+              >
+                {isSubmitting ? 'Sending...' : 'Resend verification code'}
+              </button>
+            </div>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setShowVerificationStep(false)}
+                className="text-sm text-gray-600 hover:text-gray-500"
+              >
+                Back to sign up form
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Main sign up form
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl w-full bg-white rounded-xl shadow-md overflow-hidden">
@@ -336,7 +468,7 @@ const SignUpPage: React.FC = () => {
                   disabled={isSubmitting}
                   className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                  {isSubmitting ? 'Signing up...' : 'Sign Up'}
+                  {isSubmitting ? 'Sending verification...' : 'Continue with Verification'}
                 </button>
               </div>
             </form>

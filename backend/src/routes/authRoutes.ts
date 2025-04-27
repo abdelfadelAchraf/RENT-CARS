@@ -10,12 +10,17 @@ import {
   logout
 } from '../controllers/authController';
 import { upload } from '../config/cloudinary';
+import { sendVerificationCode, verifyEmailCode } from '../controllers/verificationController';
 
 const router = express.Router();
 
 // Public routes
 router.post('/register', register);
 router.post('/login', login);
+
+// Email verification routes
+router.post('/send-verification', sendVerificationCode);
+router.post('/verify-email', verifyEmailCode);
 
 // Protected routes
 router.get('/me', protect, getMe);

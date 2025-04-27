@@ -10,7 +10,11 @@ interface User {
   role: string;
   profileImage: string;
   phone:string
-  // Add other user properties as needed
+}
+interface VerificationResponse{
+  success:boolean;
+  message:string ;
+  verified ?: boolean ;
 }
 
 interface RegisterData {
@@ -18,6 +22,7 @@ interface RegisterData {
   email: string;
   password: string;
   role?: 'user' | 'renter';
+  isVerified:boolean;
 }
 
 interface UpdateUserData {
@@ -36,6 +41,12 @@ interface AuthContextType {
   updateProfileImage: (file: File, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) => Promise<{ success: boolean; message?: string; user?: User }>;
   deleteAccount: () => Promise<{ success: boolean; message?: string }>;
   getMe: () => Promise<{ success: boolean; message?: string; user?: User }>;
+  
+  //Methods for email verification
+  sendVerificationCode:(email:string)=>Promise<{success:boolean; message:string}>;
+  verifyEmail:(email:string , code: string)=>Promise<VerificationResponse>;
+  resendVerificationCode:(email:string)=>Promise<{success:boolean; message:string}>;
+
 }
 
 interface AuthProviderProps {
@@ -122,9 +133,44 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // Verification email functions 
+  const sendVerificationCode = async (email: string) => {
+    try {
+      const response = await axios.post('/api/auth/send-verification', { email });
+      return response.data;
+    } catch (error) {
+      console.error('Error sending verification code:', error);
+      
+      // Handle Axios error responses
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data || { success: false, message: 'Failed to send verification code' };
+      }
+      
+      return { success: false, message: 'Failed to send verification code' };
+    }
+  };
+
+  // verify Email function 
+  const verifyEmail = async (email: string, code: string) => {
+    try {
+      const response = await axios.post('/api/auth/verify-email', { email, code });
+      return response.data;
+    } catch (error) {
+      console.error('Error verifying email:', error);
+      
+      // Handle Axios error responses
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data || { success: false, message: 'Failed to verify email' };
+      }
+      
+      return { success: false, message: 'Failed to verify email' };
+    }
+  };
+
+
   const register = async (userData: RegisterData) => {
     try {
-      const response = await axios.post<{ message: string }>(
+      const response = await axios.post(
         '/api/auth/register',
         userData
       );
@@ -257,7 +303,10 @@ const deleteAccount = async () => {
       updateUser,
       updateProfileImage,
       deleteAccount,
-      getMe
+      getMe,
+      sendVerificationCode,
+      verifyEmail,
+      resendVerificationCode: sendVerificationCode,
     }}>
       {children}
     </AuthContext.Provider>

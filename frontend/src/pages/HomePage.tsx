@@ -1,11 +1,11 @@
 import { BsGooglePlay } from 'react-icons/bs';
 import { IoLogoApple } from 'react-icons/io';
 import car from "../assets/car.png";
-import car1 from "../assets/car1.png";
 import SearchHome from '../components/SearchHome';
 import ProcessSteps from '../components/ProcessSteps';
 import PopularCarRentalDeals from '../components/PopularCarsPage';
-import { defaultSteps, newSteps } from '../assets/constants';
+import { defaultSteps } from '../assets/constants';
+import WhyChooseUs from './WhyChooseUs';
 
 
 const HomePage = () => {
@@ -67,26 +67,9 @@ const HomePage = () => {
 
 
       <hr className='border-t border-gray-200 my-6' />
-      <div className='flex flex-col px-20 sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
-        <div className='w-full'>
-          <img
-            src={car1}
-            alt="Car image"
-            className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl object-contain transform hover:scale-105 transition-transform duration-500"
-          />
-        </div>
-        <div className='px-4'>
-          <ProcessSteps
-            subtitle="Why choose us"
-            defaultSteps={newSteps}
-            title="We offer the best experience"
-            textBreak=" with our rental deals"
-            className='flex flex-col items-start'
-            className2='flex flex-col w-full'
-            className3='flex flex-row'
-            className4='flex flex-col items-start gap-2'
-          />
-        </div>
+      <div className='flex flex-col  sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
+        
+         <WhyChooseUs/>
       </div>
 
 

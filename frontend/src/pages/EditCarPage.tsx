@@ -105,7 +105,7 @@ const EditCarPage = () => {
     };
 
     fetchCarDetails();
-  }, [id, getCar]);
+  }, [id]);
 
   // Handle all input changes
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
