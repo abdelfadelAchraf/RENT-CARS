@@ -1,10 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { useCars } from '../context/CarContext';
 
 const AddCarPage: React.FC = () => {
-  const { user } = useAuth();
   const { addCar, loading, error: contextError } = useCars();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);

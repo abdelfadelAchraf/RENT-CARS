@@ -104,40 +104,6 @@ const LoadingPage: React.FC<LoadingPageProps> = ({
   );
 };
 
-// Enhanced Car SVG component
-const CarSVG: React.FC = () => (
-  <svg
-    width="48"
-    height="24"
-    viewBox="0 0 48 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="drop-shadow-md"
-  >
-    {/* Car body */}
-    <path
-      d="M8 12H40C42.2091 12 44 13.7909 44 16V20C44 20.5523 43.5523 21 43 21H5C4.44772 21 4 20.5523 4 20V16C4 13.7909 5.79086 12 8 12Z"
-      fill="#3B82F6"
-    />
-    {/* Car top */}
-    <path
-      d="M14 6H34C36.2091 6 38 7.79086 38 10V12H10V10C10 7.79086 11.7909 6 14 6Z"
-      fill="#2563EB"
-    />
-    {/* Windows */}
-    <path
-      d="M16 8H32C32.5523 8 33 8.44772 33 9V11C33 11.5523 32.5523 12 32 12H16C15.4477 12 15 11.5523 15 11V9C15 8.44772 15.4477 8 16 8Z"
-      fill="#93C5FD"
-    />
-    {/* Wheels */}
-    <circle cx="12" cy="18" r="3" fill="#1E3A8A" />
-    <circle cx="36" cy="18" r="3" fill="#1E3A8A" />
-    {/* Wheel details */}
-    <circle cx="12" cy="18" r="1" fill="#3B82F6" />
-    <circle cx="36" cy="18" r="1" fill="#3B82F6" />
-    {/* Headlights */}
-    <circle cx="42" cy="14" r="1" fill="#FBBF24" />
-  </svg>
-);
+
 
 export default LoadingPage;

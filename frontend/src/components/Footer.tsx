@@ -2,9 +2,8 @@ import { CiFacebook } from "react-icons/ci";
 import { FaLinkedinIn } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io";
 
-type Props = {};
 
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer className="relative bg-gray-800">
       {/* Footer content */}

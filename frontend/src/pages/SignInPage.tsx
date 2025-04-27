@@ -1,7 +1,7 @@
 // pages/SignInPage.tsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaUser, FaKey } from 'react-icons/fa';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 

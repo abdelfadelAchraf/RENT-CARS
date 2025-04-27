@@ -9,7 +9,6 @@ const CarCard: React.FC<Car> = ({
   name,
   images,
   rating,
-  reviewCount,
   passengers,
   transmission,
   airConditioning,
