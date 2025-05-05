@@ -8,6 +8,11 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD
   }
 });
+interface EmailOptions {
+  email: string;
+  subject: string;
+  message: string;
+}
 
 // Function to send verification email
 export const sendVerificationEmail = async (email: string, verificationCode: string): Promise<boolean> => {
@@ -36,4 +41,26 @@ export const sendVerificationEmail = async (email: string, verificationCode: str
     console.error('Error sending verification email:', error);
     return false;
   }
+};
+
+
+export const sendEmail = async (options: EmailOptions): Promise<void> => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT || '587'),
+    secure: process.env.EMAIL_SECURE === 'true', 
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM}>`,
+    to: options.email,
+    subject: options.subject,
+    html: options.message,
+  };
+
+  await transporter.sendMail(mailOptions);
 };

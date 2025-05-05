@@ -23,6 +23,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import LoadingPage from './components/ui/LoadingPage ';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import EditCarPage from './pages/EditCarPage';
+import ResetPassword from './pages/ResetPassword';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -37,7 +38,7 @@ const App: React.FC = () => {
       // This ensures the loading screen shows for at least 3 seconds
       // even if everything loads faster
     }, 3000);
-    
+
     return () => clearTimeout(minLoadTime);
   }, []);
 
@@ -49,10 +50,21 @@ const App: React.FC = () => {
     <div>
       <Navbar />
       <ScrollToTop />
-      <ToastContainer position="bottom-right" />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        newestOnTop={false}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        limit={1}
+      />
+
       <Routes>
         {/* Tes autres routes ici */}
-        
+
         {/* Route NotFound en dernier */}
         <Route path="/" element={<HomePage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
@@ -65,6 +77,7 @@ const App: React.FC = () => {
         <Route path="/support" element={<SupportPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/terms-of-services" element={<TermsOfServicePage />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/add-car" element={<AddCarPage />} />
           <Route path="/profile" element={<AccountSettingsPage />} />

@@ -202,9 +202,11 @@ export const CarProvider: React.FC<CarProviderProps> = ({ children }) => {
       if (response.data.success) {
         // Refresh user cars after adding a new one
         await fetchUserCars();
+        toast.success('Car added successfully');
         return response.data.data;
       } else {
         setError('Failed to add car');
+        toast.error('Failed to add car');
         return null;
       }
     } catch (err: any) {

@@ -3,13 +3,14 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { MdOutlineDateRange } from 'react-icons/md';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const SearchHome = () => {
   const [location, setLocation] = useState('');
   const [pickupDate, setPickupDate] = useState<Date | null>(null);
   const [returnDate, setReturnDate] = useState<Date | null>(null);
-
+  const navigate = useNavigate();
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ location, pickupDate, returnDate });
@@ -27,16 +28,17 @@ const SearchHome = () => {
                 <FaMapMarkerAlt />
               </div>
               <div className="flex-1">
-                <h2 className="font-medium text-gray-700 mb-1">Location</h2>
+                <h2 className="font-medium text-gray-700 mb-1">Car</h2>
                 <input 
                   type="search" 
                   name="search" 
                   id="search" 
-                  placeholder="Search your location"
+                  placeholder="Find your car"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   className="w-full border-none text-gray-800 text-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-1"
-                />
+                  required
+             />
               </div>
             </div>
 
@@ -85,6 +87,7 @@ const SearchHome = () => {
             <div className="flex items-center justify-center mt-4 md:mt-0 md:ml-4">
               <button 
                 type="submit"
+                onClick={() => navigate('/rental-deals')}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
               >
                 Search

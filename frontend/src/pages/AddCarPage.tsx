@@ -267,7 +267,7 @@ const AddCarPage: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price per Day ($)*</label>
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price per Day (DH)*</label>
             <input
               type="number"
               id="price"
@@ -469,14 +469,13 @@ const AddCarPage: React.FC = () => {
           )}
         </div>
 
-        {/* Submit button */}
         <div className="flex justify-end">
           <button
             type="submit"
             disabled={loading}
             className={`bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            {loading ? 'Submitting...' : 'Add Car'}
+            {loading ? 'Adding the car...' : 'Add Car'}
           </button>
         </div>
       </form>

@@ -1,15 +1,34 @@
+
 import React, { useState } from 'react';
 import { MdEmail } from 'react-icons/md';
 import { IoArrowBack } from 'react-icons/io5';
+import axios from 'axios'; 
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement your password reset logic here
-    setIsSubmitted(true);
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      await axios.post('/api/auth/forgot-password', { email });
+      setIsSubmitted(true);
+    } catch (err) {
+      // Handle different types of errors
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data.message || 'Failed to send reset email');
+      } else {
+        setError('An unexpected error occurred');
+      }
+      console.error('Password reset error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -19,13 +38,19 @@ const ForgotPassword: React.FC = () => {
         <div className="bg-blue-500 text-white py-5 px-6 text-center">
           <h1 className="text-2xl font-bold">Forgot Password</h1>
         </div>
-
+        
         <div className="px-6 py-8">
           {!isSubmitted ? (
             <>
               <p className="text-gray-600 mb-6">
                 Enter your email address and we'll send you a link to reset your password.
               </p>
+              
+              {error && (
+                <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-6">
+                  {error}
+                </div>
+              )}
               
               <form onSubmit={handleSubmit}>
                 <div className="mb-6">
@@ -45,12 +70,15 @@ const ForgotPassword: React.FC = () => {
                     />
                   </div>
                 </div>
-
+                
                 <button
                   type="submit"
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded font-medium transition duration-200"
+                  disabled={isLoading}
+                  className={`w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded font-medium transition duration-200 ${
+                    isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Reset Password
+                  {isLoading ? 'Sending...' : 'Reset Password'}
                 </button>
               </form>
             </>
@@ -71,7 +99,7 @@ const ForgotPassword: React.FC = () => {
               </p>
             </div>
           )}
-
+          
           <div className="mt-6 text-center">
             <a href="/signin" className="inline-flex items-center text-blue-500 hover:text-blue-600">
               <IoArrowBack className="mr-1" />

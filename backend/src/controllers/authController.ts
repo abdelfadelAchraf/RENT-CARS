@@ -2,9 +2,11 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import User from '../models/userModel';
 import { cloudinary } from '../config/cloudinary';
 import Car from '../models/carModel';
+import { sendEmail } from '../config/nodeMailer';
 
 // Extend Request interface
 interface AuthRequest extends Request {
@@ -24,9 +26,9 @@ const generateToken = (id: string): string => {
   );
 };
 
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
+// Description    Register user
+// EndPoint   POST /api/auth/register
+// Access  Public
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password, role, phone, isVerified } = req.body;
@@ -82,9 +84,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
+// Description    Login user
+// EndPoint   POST /api/auth/login
+// Access  Public
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -132,70 +134,182 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// export const login = async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { email, password } = req.body;
+// Description    Forgot password - Generate password reset token
+// EndPoint   POST /api/auth/forgot-password
+// Access  Public
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email } = req.body;
 
-//     // Validate email & password
-//     if (!email || !password) {
-//       res.status(400).json({
-//         success: false,
-//         message: 'Please provide email and password'
-//       });
-//     }
+    if (!email) {
+      res.status(400).json({ success: false, message: 'Please provide an email address' });
+      return;
+    }
 
-//     // Check for user
-//     const user = await User.findOne({ email }).select('+password');
-//     if (!user) {
-//       res.status(401).json({
-//         success: false,
-//         message: 'Invalid credentials'
-//       });
-//     }
+    // Find user by email
+    const user = await User.findOne({ email });
 
-//     // Check if user exists before comparing password
-//     if (!user) {
-//       res.status(401).json({
-//         success: false,
-//         message: 'Invalid credentials'
-//       });
-//       return;
-//     }
+    // Don't reveal whether a user with that email exists for security reasons
+    if (!user) {
+      res.status(200).json({ 
+        success: true, 
+        message: 'If a user with that email exists, a password reset link has been sent'
+      });
+      return;
+    }
 
-//     // Check if password matches
-//     const isMatch = await bcrypt.compare(password, user.password);
-//     if (!isMatch) {
-//       res.status(401).json({
-//         success: false,
-//         message: 'Invalid credentials'
-//       });
-//     }
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
 
-//     // Generate token
-//     const token = generateToken(user._id.toString());
+    // Hash token and set to resetPasswordToken field
+    user.resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
 
-//     res.status(200).json({
-//       success: true,
-//       token,
-//       user: {
-//         id: user._id,
-//         name: user.name,
-//         email: user.email,
-//         role: user.role,
-//         profileImage: user.profileImage
-//       }
-//     });
-//   } catch (error: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message
-//     });
-//   }
-// };
+    // Set expire time (1 hour)
+    user.resetPasswordExpire = new Date(Date.now() + 3600000);
 
-// @desc    Get current user
-// @route   GET /api/auth/me
-// @access  Private
+    await user.save();
+
+    // Create reset URL
+    const resetUrl = `${req.protocol}://localhost:5173/reset-password/${resetToken}`;
+    // Create email message
+    const message = `
+      <h1>Password Reset Request</h1>
+      <p>You requested a password reset. Please click the link below to reset your password:</p>
+      <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #4285f4; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a>
+      <p>This link will expire in 1 hour.</p>
+      <p>If you didn't request this, please ignore this email and your password will remain unchanged.</p>
+    `;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Password Reset Request',
+        message,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Password reset email sent'
+      });
+    } catch (error) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
+
+      res.status(500).json({
+        success: false,
+        message: 'Email could not be sent'
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
+
+// Description    Verify reset token
+// EndPoint   GET /api/auth/verify-reset-token/:token
+// Access  Public
+export const verifyResetToken = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Get hashed token
+    const resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+
+    // Find user with matching token and valid expiration
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      res.status(400).json({ success: false, message: 'Invalid or expired token' });
+      return;
+    }
+
+    res.status(200).json({ success: true, message: 'Token is valid' });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
+
+// Description    Reset password
+// EndPoint   POST /api/auth/reset-password
+// Access  Public
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      res.status(400).json({ success: false, message: 'Please provide token and new password' });
+      return;
+    }
+
+    // Password validation
+    if (password.length < 8) {
+      res.status(400).json({ success: false, message: 'Password must be at least 8 characters' });
+      return;
+    }
+
+    // Get hashed token
+    const resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex');
+
+    // Find user with matching token and valid expiration
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    }).select('+password');
+
+    if (!user) {
+      res.status(400).json({ success: false, message: 'Invalid or expired token' });
+      return;
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    
+    // Clear reset token fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    // Save user with new password
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password has been reset successfully'
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
+
+// Description    Get current user
+// EndPoint   GET /api/auth/me
+// Access  Private
 export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.user?.id).select('-password');
@@ -217,9 +331,9 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
   }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/update
-// @access  Private
+// Description    Update user profile
+// EndPoint   PUT /api/auth/update
+// Access  Private
 export const updateUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { name, email } = req.body;
@@ -265,9 +379,9 @@ export const updateUser = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-// @desc    Update profile image
-// @route   PUT /api/auth/update-image
-// @access  Private
+// Description    Update profile image
+// EndPoint   PUT /api/auth/update-image
+// Access  Private
 export const updateProfileImage = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user?.id;
@@ -313,9 +427,9 @@ export const updateProfileImage = async (req: AuthRequest, res: Response): Promi
   }
 };
 
-// @desc    Delete user account
-// @route   DELETE /api/auth/delete
-// @access  Private
+// Description    Delete user account
+// EndPoint   DELETE /api/auth/delete
+// Access  Private
 export const deleteUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user?.id;
@@ -353,9 +467,9 @@ export const deleteUser = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Private
+// Description    Logout user
+// EndPoint   POST /api/auth/logout
+// Access  Private
 export const logout = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     // In a real app, you would handle token invalidation here

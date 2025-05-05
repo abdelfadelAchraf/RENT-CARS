@@ -7,7 +7,10 @@ import {
   updateUser, 
   deleteUser,
   updateProfileImage,
-  logout
+  logout,
+  forgotPassword,
+  verifyResetToken,
+  resetPassword
 } from '../controllers/authController';
 import { upload } from '../config/cloudinary';
 import { sendVerificationCode, verifyEmailCode } from '../controllers/verificationController';
@@ -21,6 +24,10 @@ router.post('/login', login);
 // Email verification routes
 router.post('/send-verification', sendVerificationCode);
 router.post('/verify-email', verifyEmailCode);
+// For the forgot password feature
+router.post('/forgot-password', forgotPassword);
+router.get('/verify-reset-token/:token', verifyResetToken);
+router.post('/reset-password', resetPassword);
 
 // Protected routes
 router.get('/me', protect, getMe);
