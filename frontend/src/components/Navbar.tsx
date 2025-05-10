@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiLogOut, FiPlus, FiSettings } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { FaCar } from 'react-icons/fa';
-import { IoSpeedometer } from 'react-icons/io5';
+import logo from '../assets/logo.png';
 import profile from '../assets/default-profile_image.png';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +28,7 @@ const Navbar = () => {
   console.log(user?.role)
 
   const navLinks = [
-    { text: "Become a renter", path: "/become-a-renter" },
+    // { text: "Become a renter", path: "/become-a-renter" },
     { text: "Rental deals", path: "/rental-deals" },
     { text: "How it works", path: "/how-it-works" },
     { text: "Why choose us", path: "/why-choose-us" }
@@ -52,11 +52,11 @@ const Navbar = () => {
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="uppercase flex items-center justify-center gap-2 text-blue-400 font-bold text-2xl md:text-3xl lg:text-4xl">
-          <IoSpeedometer className='sm:text-3xl lg:text-blue-500 lg:text-6xl ' />  RENTCARS
+          <img src={logo} alt="" className='h-14' />
           </Link>
 
           {/* Desktop Navigation */}

@@ -7,7 +7,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
 import ScrollToTop from './components/ScrollToTop';
 import HowItWorksPage from './pages/HowItWorksPage';
-import BecomeRenterPage from './pages/BecomeRenterPage';
+// import BecomeRenterPage from './pages/BecomeRenterPage';
 import RentalDealsPage from './pages/RentalDealsPage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
@@ -24,6 +24,7 @@ import LoadingPage from './components/ui/LoadingPage ';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import EditCarPage from './pages/EditCarPage';
 import ResetPassword from './pages/ResetPassword';
+import ProgressBar from './components/ui/ProgressBar';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -49,6 +50,7 @@ const App: React.FC = () => {
   return (
     <div>
       <Navbar />
+      <ProgressBar/>
       <ScrollToTop />
       <ToastContainer
         position="bottom-right"
@@ -68,7 +70,7 @@ const App: React.FC = () => {
         {/* Route NotFound en dernier */}
         <Route path="/" element={<HomePage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
-        <Route path="/become-a-renter" element={<BecomeRenterPage />} />
+        {/* <Route path="/become-a-renter" element={<BecomeRenterPage />} /> */}
         <Route path="/rental-deals" element={<RentalDealsPage />} />
         <Route path="/rent/:id" element={<RentalDetailsPage />} />
         <Route path="/signin" element={<SignInPage />} />
