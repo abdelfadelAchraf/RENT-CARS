@@ -5,6 +5,13 @@ import BMW3 from './BMW3.png';
 import jag1 from './jag1.png';
 import jag2 from './jag2.png';
 import jag3 from './jag3.png';
+export interface Testimonial {
+    name: string;
+    image: string;
+    text: string;
+    rating: number;
+}
+
 export const AllCars = [
     // Original cars
     {
@@ -564,4 +571,61 @@ export const newSteps = [
     title: "24/7 technical support",
     description: "Have a question? Contact Rentcars support any time when you have problem."
   }
+];
+export const peopleOpinions: Testimonial[] = [
+    
+    {
+        name: "Yasmine El Mansouri",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmHMsP8hTelFnU7Ljvf9Bz3zCsIxcsZNG0DQ&s",
+        text: "Service professionnel et rapide. La voiture était en parfait état. Je referai appel à eux sans hésitation.",
+        rating: 5
+    },
+    {
+        name: "Hamza Bennis",
+        image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+        text: "Franchement top ! Le personnel est accueillant et les prix sont très compétitifs.",
+        rating: 4
+    },
+    {
+        name: "Fatima Zahra Idrissi",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShwIjMMGGKfEHrawR7b3xPPj1mCVe0UFwyjQ&s",
+        text: "Très bonne expérience. Le site est facile à utiliser et le service client est réactif.",
+        rating: 5
+    },
+    {
+        name: "Ismail Ouahbi",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrAA9KmCtxPgYhzS7xx2i_YhcGrcHQT9OOYA&s",
+        text: "J’ai loué une voiture pour le week-end à Marrakech et tout s’est passé à merveille.",
+        rating: 4
+    },
+    {
+        name: "Sara Bouziane",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB4B0zk_PsWp-_jBHRKp5SWFIQAauHcbbjOQ&s",
+        text: "Rapport qualité/prix excellent. Je recommande à tous mes amis.",
+        rating: 5
+    },
+    {
+        name: "Omar Laaroussi",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaEdCojUkd4xAgtEtsBkfZEiujV8YVFb074dj3RCo2nHUftDs0QvW05aXzv6N2FMhjuuA&usqp=CAU",
+        text: "Le processus était simple et rapide. Merci pour votre professionnalisme.",
+        rating: 5
+    },
+    {
+        name: "Lina El Fassi",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCzp59hdids48_k_sVXM0XXuRxuhKx14252nYflfLTvb62L5zNIBLWzKvCWCb0DfMifQc&usqp=CAU",
+        text: "Très contente du service. La voiture était propre et bien entretenue.",
+        rating: 4
+    },
+    {
+        name: "Rachid Talbi",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-SvLyjveQcgS-KlrtxcyG4D6AuOxL-K1QPihBmenyz_9BMacV0UPRpu5b7bYYyAe5fl8&usqp=CAU",
+        text: "Bon accueil, véhicule impeccable. Je recommande vivement cette agence.",
+        rating: 5
+    },
+    {
+        name: "Nadia Chaoui",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5aJP2lRxxMbP3BGlxpykwCm85kNLus9hUQ1_WdR9tUORsDKzDAMiEsZGw2DQvviSSXGQ&usqp=CAU",
+        text: "Service rapide et efficace. Aucune mauvaise surprise. Bravo à l'équipe.",
+        rating: 5
+    }
 ];

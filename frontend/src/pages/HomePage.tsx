@@ -5,7 +5,7 @@ import SearchHome from '../components/SearchHome';
 import ProcessSteps from '../components/ProcessSteps';
 import PopularCarRentalDeals from '../components/PopularCarsPage';
 import { defaultSteps } from '../assets/constants';
-import WhyChooseUs from './WhyChooseUs';
+// import WhyChooseUs from './WhyChooseUs';
 import Testimonials from '../components/Testimonials';
 
 
@@ -68,14 +68,14 @@ const HomePage = () => {
 
 
       <hr className='border-t border-gray-200 my-6' />
-      <div className='flex flex-col  sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
+      {/* <div className='flex flex-col  sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
         
          <WhyChooseUs/>
-      </div>
+      </div> */}
 
 
       <PopularCarRentalDeals />
-      <hr />
+      <hr className='text-gray-100'   />
       <Testimonials/>
     </div>
   );

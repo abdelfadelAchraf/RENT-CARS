@@ -1,46 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { FaQuoteLeft, FaStar } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import { peopleOpinions, Testimonial } from '../assets/constants';
 
 // Define the interface for testimonial data
-interface Testimonial {
-    name: string;
-    image: string;
-    text: string;
-    rating: number;
-}
 
 // Define props interface for the TestimonialCard component
 interface TestimonialCardProps {
     testimonial: Testimonial;
 }
-
-const peopleOpinions: Testimonial[] = [
-    {
-        name: "John Doe",
-        image: "https://images.unsplash.com/photo-1502685104226-e9b3c4f2a0d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus.",
-        rating: 5
-    },
-    {
-        name: "Jane Smith",
-        image: "https://images.unsplash.com/photo-1502685104226-e9b3c4f2a0d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus.",
-        rating: 5
-    },
-    {
-        name: "Alice Johnson",
-        image: "https://images.unsplash.com/photo-1502685104226-e9b3c4f2a0d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus.",
-        rating: 5
-    },
-    {
-        name: "Bob Brown",
-        image: "https://images.unsplash.com/photo-1502685104226-e9b3c4f2a0d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus.",
-        rating: 5
-    }
-]
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
     return (
