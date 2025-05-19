@@ -6,6 +6,7 @@ import ProcessSteps from '../components/ProcessSteps';
 import PopularCarRentalDeals from '../components/PopularCarsPage';
 import { defaultSteps } from '../assets/constants';
 import WhyChooseUs from './WhyChooseUs';
+import Testimonials from '../components/Testimonials';
 
 
 const HomePage = () => {
@@ -74,6 +75,8 @@ const HomePage = () => {
 
 
       <PopularCarRentalDeals />
+      <hr />
+      <Testimonials/>
     </div>
   );
 };
