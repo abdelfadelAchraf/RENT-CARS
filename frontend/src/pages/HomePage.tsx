@@ -1,15 +1,34 @@
 import { BsGooglePlay } from 'react-icons/bs';
 import { IoLogoApple } from 'react-icons/io';
 import car from "../assets/car.png";
+import jag1 from "../assets/jag1.png";
 import SearchHome from '../components/SearchHome';
 import ProcessSteps from '../components/ProcessSteps';
 import PopularCarRentalDeals from '../components/PopularCarsPage';
 import { defaultSteps } from '../assets/constants';
 // import WhyChooseUs from './WhyChooseUs';
 import Testimonials from '../components/Testimonials';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
+const carImages = [
+  car, jag1 
+  
+];
 
 const HomePage = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Effect to change the image every 5 seconds
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carImages.length);
+    }, 5000);
+    
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
@@ -48,24 +67,42 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Car Image */}
-          <div className="w-full md:w-1/2 flex justify-center">
-            <img
-              src={car}
-              alt="Car rental illustration"
-              className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl object-contain transform hover:scale-105 transition-transform duration-500"
-            />
+          {/* Car Image Carousel */}
+          <div className="w-full md:w-1/2 flex justify-center overflow-hidden relative">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImageIndex}
+                src={carImages[currentImageIndex]}
+                alt={`Car rental illustration ${currentImageIndex + 1}`}
+                className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl object-contain"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+              />
+            </AnimatePresence>
+            
+            {/* Optional: Car model indicator dots */}
+            {carImages.length > 1 && (
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex gap-2 mb-4">
+                {carImages.map((_, index) => (
+                  <div 
+                    key={index} 
+                    className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-blue-500' : 'bg-gray-300'}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Search Section */}
-      <div className="container mx-auto  px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-16 lg:-mt-24 mb-12 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-16 lg:-mt-24 mb-12 relative z-10">
         <SearchHome />
       </div>
+      
       <ProcessSteps subtitle="How it works" defaultSteps={defaultSteps} className='justify-center items-center flex-col' className2='grid grid-cols-1' className3='flex-col' />
-
-
 
       <hr className='border-t border-gray-200 my-6' />
       {/* <div className='flex flex-col  sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
@@ -73,9 +110,8 @@ const HomePage = () => {
          <WhyChooseUs/>
       </div> */}
 
-
       <PopularCarRentalDeals />
-      <hr className='text-gray-100'   />
+      <hr className='text-gray-100' />
       <Testimonials/>
     </div>
   );
