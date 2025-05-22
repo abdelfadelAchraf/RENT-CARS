@@ -2,6 +2,9 @@ import { BsGooglePlay } from 'react-icons/bs';
 import { IoLogoApple } from 'react-icons/io';
 import car from "../assets/car.png";
 import jag1 from "../assets/jag1.png";
+import image11 from "../assets/image 11.png";
+import image12 from "../assets/image 12.png";
+import audi from "../assets/Audi 1.svg";
 import SearchHome from '../components/SearchHome';
 import ProcessSteps from '../components/ProcessSteps';
 import PopularCarRentalDeals from '../components/PopularCarsPage';
@@ -10,9 +13,11 @@ import { defaultSteps } from '../assets/constants';
 import Testimonials from '../components/Testimonials';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CarLogoCarousel from '../components/CarLogoCarousel';
+import DownloadApp from '../components/DownLoadApp';
 
 const carImages = [
-  car, jag1 
+  car, jag1 , audi, image11, image12
   
 ];
 
@@ -104,6 +109,7 @@ const HomePage = () => {
       
       <ProcessSteps subtitle="How it works" defaultSteps={defaultSteps} className='justify-center items-center flex-col' className2='grid grid-cols-1' className3='flex-col' />
 
+            <CarLogoCarousel/>
       <hr className='border-t border-gray-200 my-6' />
       {/* <div className='flex flex-col  sm:flex-col md:flex-col lg:flex-row gap-6 items-center justify-center'>
         
@@ -113,6 +119,7 @@ const HomePage = () => {
       <PopularCarRentalDeals />
       <hr className='text-gray-100' />
       <Testimonials/>
+      <DownloadApp/>
     </div>
   );
 };
