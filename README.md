@@ -80,7 +80,7 @@ cd RENT-CARS
 cd backend
 npm install
 cp .env.example .env     # Créer un fichier .env avec les variables nécessaires
-npm run dev              # Lancer le backend
+npm start              # Lancer le backend
 ```
 
 ### 3. Frontend – Lancement
