@@ -1,8 +1,13 @@
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+
 # 🚗 RENT-CARS – Application de location de voitures
 
 **RENT-CARS** est une application web fullstack de location de voitures entre particuliers, développée avec les technologies modernes du web : React, TypeScript, Node.js, Express et MongoDB.
 
 Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un groupe de trois étudiants, avec une approche agile et une architecture MVC bien structurée.
+
+**vous trouvrez lien en haut dans description** :
+> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)
 
 ---
 
@@ -52,6 +57,7 @@ RENT-CARS/
 
 ## 🚀 Déploiement
 
+> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)
 - **Frontend** déployé sur [Vercel](https://vercel.com/)
 - **Backend** déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
@@ -124,9 +130,9 @@ EMAIL_PASSWORD=...
 
 ## 👥 Équipe
 
-- Achraf Abdelfadel [https://github.com/abdelfadelAchraf]
-- Zakaria Ennaqui [https://github.com/zakariaennaqui]
-- Imane Abasalah [https://github.com/username]
+- Achraf Abdelfadel [https://github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
+- Zakaria Ennaqui [https://github.com/zakariaennaqui](https://github.com/zakariaennaqui)
+- Imane Abasalah [https://github.com/username](https://github.com/username)
 
 ---
 
