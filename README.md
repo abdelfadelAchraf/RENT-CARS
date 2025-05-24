@@ -130,9 +130,9 @@ EMAIL_PASSWORD=...
 
 ## 👥 Équipe
 
-- Achraf Abdelfadel [https://github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
-- Zakaria Ennaqui [https://github.com/zakariaennaqui](https://github.com/zakariaennaqui)
-- Imane Abasalah [https://github.com/username](https://github.com/username)
+> Achraf Abdelfadel [https://github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
+> Zakaria Ennaqui [https://github.com/zakariaennaqui](https://github.com/zakariaennaqui)
+> Imane Abasalah [https://github.com/username](https://github.com/username)
 
 ---
 
@@ -145,5 +145,5 @@ Ce projet est réalisé dans le cadre pédagogique du module *Technologie Web* �
 ## 📬 Contact
 
 Pour toute question ou suggestion :
-- 📧 [contact@rentalcars-demo.com](mailto:contact@rentalcars-demo.com)
-- 🔗 [github.com/rentalcars-project](https://github.com/rentalcars-project)
+> 📧 [contact@rentalcars-demo.com](mailto:contact@rentalcars-demo.com)
+> 🔗 [github.com/rentalcars-project](https://github.com/rentalcars-project)
