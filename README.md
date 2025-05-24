@@ -130,7 +130,7 @@ EMAIL_PASSWORD=...
 
 ## 👥 Équipe
 
->Achraf Abdelfadel [github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
+>Achraf Abdelfadel[github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
 ---
 > Zakaria Ennaqui [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
 ---
