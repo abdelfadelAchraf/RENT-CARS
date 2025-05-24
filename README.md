@@ -34,10 +34,11 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 ---
 
-## 🖼️ Aperçu de l'application
+## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> Aperçu de l'application
 
-![phone](frontend/src/assets/phone.png)
-<!--![...](...)-->
+![rental_car](frontend/src/assets/rental_car.png)
+![rental_car2](frontend/src/assets/rental_car2.png)
+![rental_car3](frontend/src/assets/rental_car3.png)
 
 ---
 
