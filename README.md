@@ -147,5 +147,6 @@ Ce projet est réalisé dans le cadre pédagogique du module *Technologie Web* �
 ## 📬 Contact
 
 Pour toute question ou suggestion :
-- > 📧 [contact@rentalcars-demo.com](mailto:contact@rentalcars-demo.com)
-- > 🔗 [github.com/rentalcars-project](https://github.com/rentalcars-project)
+> 📧 [contact@rentalcars-demo.com](mailto:contact@rentalcars-demo.com)
+--
+> 🔗 [github.com/rentalcars-project](https://github.com/rentalcars-project)
