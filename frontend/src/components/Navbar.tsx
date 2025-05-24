@@ -9,8 +9,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { isAuthenticated, user, logout, loading } = useAuth();
- const navigate = useNavigate()
-  
+  const navigate = useNavigate()
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="uppercase text-blue-500 font-bold text-2xl md:text-3xl lg:text-4xl">
-            RENTCARS
+              RENTCARS
             </Link>
             <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full"></div>
           </div>
@@ -56,7 +56,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="uppercase flex items-center justify-center gap-2 text-blue-400 font-bold text-2xl md:text-3xl lg:text-4xl">
-          <img src={logo} alt="" className='h-14' />
+            <img src={logo} alt="" className='h-14' />
           </Link>
 
           {/* Desktop Navigation */}
@@ -64,8 +64,8 @@ const Navbar = () => {
             <ul className="flex items-center gap-6 mr-8">
               {navLinks.map((link, index) => (
                 <li key={index}>
-                  <Link 
-                    to={link.path} 
+                  <Link
+                    to={link.path}
                     className="text-gray-700 hover:text-blue-500 font-medium transition-colors duration-200"
                   >
                     {link.text}
@@ -77,46 +77,46 @@ const Navbar = () => {
             {/* User Auth Section */}
             {isAuthenticated && user ? (
               <div className="relative">
-                <button 
+                <button
                   onClick={toggleUserMenu}
                   className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors duration-200"
                 >
                   {user.name && (
-                    <img 
-                    className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium"
-                      src={user.profileImage != "" ? user.profileImage : profile }
+                    <img
+                      className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium"
+                      src={user.profileImage != "" ? user.profileImage : profile}
                     />
                   )}
                   <span className="font-medium text-gray-800">{user.name}</span>
                 </button>
 
                 {/* Dropdown Menu */}
-                {isUserMenuOpen &&  (
+                {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                    
-                    {user.role === 'renter' && (
-      <>
-        <Link 
-          to="/add-car" 
-          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
-          onClick={() => setIsUserMenuOpen(false)}
-        >
-          <FiPlus className="text-blue-500" />
-          <span>Add a Car</span>
-        </Link>
 
-        <Link 
-          to="/my-cars" 
-          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
-          onClick={() => setIsUserMenuOpen(false)}
-        >
-          <FaCar className="text-gray-500" />
-          <span>My cars</span>
-        </Link>
-      </>
-    )}
-                    <Link 
-                      to="/profile" 
+                    {user.role === 'renter' && (
+                      <>
+                        <Link
+                          to="/add-car"
+                          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <FiPlus className="text-blue-500" />
+                          <span>Add a Car</span>
+                        </Link>
+
+                        <Link
+                          to="/my-cars"
+                          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <FaCar className="text-gray-500" />
+                          <span>My cars</span>
+                        </Link>
+                      </>
+                    )}
+                    <Link
+                      to="/profile"
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
@@ -124,7 +124,7 @@ const Navbar = () => {
                       <span>Account Settings</span>
                     </Link>
 
-                    <button 
+                    <button
                       onClick={handleLogout}
                       className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
                     >
@@ -155,8 +155,8 @@ const Navbar = () => {
           <ul className="flex flex-col space-y-4 mb-6 border-b border-gray-200 pb-6">
             {navLinks.map((link, index) => (
               <li key={index}>
-                <Link 
-                  to={link.path} 
+                <Link
+                  to={link.path}
                   onClick={() => setIsMenuOpen(false)}
                   className="text-gray-700 hover:text-blue-500 font-medium transition-colors duration-200 block py-2"
                 >
@@ -175,17 +175,28 @@ const Navbar = () => {
                 </div>
                 <span className="font-medium text-gray-800">{user.name}</span>
               </div>
-              <Link to="/add-car" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
-                <FiPlus className="text-blue-500" />
-                <span>Add a Car</span>
-              </Link>
-              <Link 
-                      to="/my-cars" 
-                      className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}
-                    >
-                      <FaCar className="text-blue-500" />
-                      <span>My cars</span>
-                    </Link>
+              {user.role === 'renter' && (
+                <>
+                  <Link
+                    to="/add-car"
+                    className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    <FiPlus className="text-blue-500" />
+                    <span>Add a Car</span>
+                  </Link>
+
+                  <Link
+                    to="/my-cars"
+                    className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    <FaCar className="text-gray-500" />
+                    <span>My cars</span>
+                  </Link>
+                </>
+              )}
+
               <Link to="/profile" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
                 <FiSettings className="text-gray-500" />
                 <span>Account Settings</span>
