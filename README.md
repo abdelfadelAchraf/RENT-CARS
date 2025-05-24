@@ -130,10 +130,11 @@ EMAIL_PASSWORD=...
 
 ## 👥 Équipe
 
-- Achraf Abdelfadel
-[github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
-- Zakaria Ennaqui > [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
-- Imane Abasalah > [github.com/username](https://github.com/username)
+> Achraf Abdelfadel [github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
+---
+> Zakaria Ennaqui [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
+---
+> Imane Abasalah [github.com/username](https://github.com/username)
 
 ---
 
