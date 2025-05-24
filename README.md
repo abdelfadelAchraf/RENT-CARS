@@ -34,6 +34,13 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 ---
 
+## 🖼️ Aperçu de l'application
+
+![phone](frontend/src/assets/phone.png)
+![...](frontend/src/assets/phone.png)
+
+---
+
 ## 🛠️ Technologies utilisées
 
 | Frontend              | Backend                   | Autres services              |
