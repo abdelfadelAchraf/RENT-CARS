@@ -66,7 +66,7 @@ RENT-CARS/
 
 ## 🚀 Déploiement
 
-<!--> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)-->
+<!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)-->
 - **Frontend** déployé sur [Vercel](https://vercel.com/)
 - **Backend** <!--déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**-->
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
