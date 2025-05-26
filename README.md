@@ -7,8 +7,8 @@
 
 Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un groupe de trois étudiants, avec une approche agile et une architecture MVC bien structurée.
 
-**vous trouvrez lien en haut dans description** :
-> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)
+<!--**vous trouvrez lien en haut dans description** :
+> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)-->
 
 ---
 
@@ -66,7 +66,7 @@ RENT-CARS/
 
 ## 🚀 Déploiement
 
-> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)
+<!--> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)-->
 - **Frontend** déployé sur [Vercel](https://vercel.com/)
 - **Backend** <!--déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**-->
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
