@@ -7,7 +7,7 @@
 
 Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un groupe de trois étudiants, avec une approche agile et une architecture MVC bien structurée.
 
-<! --**vous trouvrez lien en haut dans description** :
+<!-- **vous trouvrez lien en haut dans description** :
 > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 
 ---
