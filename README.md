@@ -50,7 +50,7 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 | TailwindCSS           | REST API                  | Cloudinary (upload d’images) |
 | React Router DOM      | JWT Authentication        | Nodemailer (emailing)        |
 | Axios                 | Mongoose ODM              | GitHub Actions (CI/CD)       |
-| Vite                  |                           | Vercel & Heroku (déploiement) |
+| Vite                  |                           | Vercel (déploiement) |
 
 ---
 
