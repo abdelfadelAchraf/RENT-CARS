@@ -64,7 +64,7 @@ RENT-CARS/
 
 ---
 
-## 🚀 Déploiement
+## Déploiement
 
 <!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 - **Frontend** déployé sur [Vercel](https://vercel.com/)
@@ -116,7 +116,7 @@ EMAIL_PASSWORD=...
 
 ---
 
-## 🧪 Tests
+## Tests
 
 - Tests manuels réalisés sur les principales fonctionnalités : 
   - Authentification
