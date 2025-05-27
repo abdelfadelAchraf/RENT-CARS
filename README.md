@@ -126,14 +126,14 @@ EMAIL_PASSWORD=...
 
 ---
 
-## 🔮 Évolutions futures
+## Évolutions futures
 
 - 📱 Application mobile React Native
-- ⭐ Système de notation & avis
-- 🗺️ Google Maps pour la localisation des voitures
-- 🎁 Programme de fidélité
+- Système de notation & avis
+- Google Maps pour la localisation des voitures
+- Programme de fidélité
 - 💬 Chat intégré avec le support
-- 🤖 Suggestions personnalisées par IA
+- Suggestions personnalisées par IA
 
 ---
 
