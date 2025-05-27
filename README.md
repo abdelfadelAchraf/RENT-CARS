@@ -143,7 +143,7 @@ EMAIL_PASSWORD=...
 ---
 > Zakaria Ennaqui [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
 ---
-> Imane Abasalah [github.com/username](https://github.com/amyaby)
+> Imane Abasalah [github.com/amyaby](https://github.com/amyaby)
 
 ---
 
