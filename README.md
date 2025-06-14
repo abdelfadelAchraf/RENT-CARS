@@ -7,8 +7,8 @@
 
 Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un groupe de trois étudiants, avec une approche agile et une architecture MVC bien structurée.
 
-**vous trouvrez lien en haut dans description** :
-> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)
+<!-- **vous trouvrez lien en haut dans description** :
+> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 
 ---
 
@@ -50,7 +50,7 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 | TailwindCSS           | REST API                  | Cloudinary (upload d’images) |
 | React Router DOM      | JWT Authentication        | Nodemailer (emailing)        |
 | Axios                 | Mongoose ODM              | GitHub Actions (CI/CD)       |
-| Vite                  |                           | Vercel & Heroku (déploiement) |
+| Vite                  |                           | Vercel (déploiement) |
 
 ---
 
@@ -64,11 +64,11 @@ RENT-CARS/
 
 ---
 
-## 🚀 Déploiement
+## Déploiement
 
-> 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/)
+<!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 - **Frontend** déployé sur [Vercel](https://vercel.com/)
-- **Backend** déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**
+- **Backend** <!--déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**-->
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 - Intégration continue avec **GitHub Actions**
 
@@ -116,7 +116,7 @@ EMAIL_PASSWORD=...
 
 ---
 
-## 🧪 Tests
+## Tests
 
 - Tests manuels réalisés sur les principales fonctionnalités : 
   - Authentification
@@ -126,14 +126,14 @@ EMAIL_PASSWORD=...
 
 ---
 
-## 🔮 Évolutions futures
+## Évolutions futures
 
 - 📱 Application mobile React Native
-- ⭐ Système de notation & avis
-- 🗺️ Google Maps pour la localisation des voitures
-- 🎁 Programme de fidélité
+- Système de notation & avis
+- Google Maps pour la localisation des voitures
+- Programme de fidélité
 - 💬 Chat intégré avec le support
-- 🤖 Suggestions personnalisées par IA
+- Suggestions personnalisées par IA
 
 ---
 
@@ -143,7 +143,7 @@ EMAIL_PASSWORD=...
 ---
 > Zakaria Ennaqui [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
 ---
-> Imane Abasalah [github.com/username](https://github.com/username)
+> Imane Abasalah [github.com/amyaby](https://github.com/amyaby)
 
 ---
 
