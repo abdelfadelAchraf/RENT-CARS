@@ -117,7 +117,8 @@ const RentalDetailsPage: React.FC = () => {
       );
       
       setShowBookingModal(false);
-      navigate('/my-bookings');
+      // navigate('/my-bookings');
+      navigate("/");
     } catch (err) {
       toast.error('Failed to complete booking. Please try again.');
       console.error('Booking error:', err);
@@ -188,12 +189,12 @@ const RentalDetailsPage: React.FC = () => {
         <div className="flex flex-col md:flex-row">
           {/* Image Gallery */}
           <div className="md:w-2/3">
-            <div className="h-96 bg-gray-100 relative">
+            <div className="h-96 bg-white relative">
               {car.images?.length > 0 ? (
                 <img 
                   src={car.images[selectedImage]} 
                   alt={car.name} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto scale-75 text-center object-contain transition-transform duration-300"
                   loading="lazy"
                 />
               ) : (

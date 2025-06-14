@@ -21,7 +21,7 @@ const CarCard: React.FC<Car> = ({
         <img 
           src={images && images.length > 0 ? images[0] : '/placeholder-car.jpg'} 
           alt={name} 
-          className="w-full h-full object-cover"
+          className="w-full h-full scale-75 object-cover"
         />
       </div>
       <div className="p-6 flex flex-col justify-between flex-grow">

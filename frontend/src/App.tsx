@@ -25,6 +25,7 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import EditCarPage from './pages/EditCarPage';
 import ResetPassword from './pages/ResetPassword';
 import ProgressBar from './components/ui/ProgressBar';
+import Dashboard from './pages/Dashboard';
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -48,7 +49,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div>
+    <>
       <Navbar />
       <ProgressBar/>
       <ScrollToTop />
@@ -80,8 +81,10 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/terms-of-services" element={<TermsOfServicePage />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+      
         <Route element={<ProtectedRoute />}>
           <Route path="/add-car" element={<AddCarPage />} />
+          <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/profile" element={<AccountSettingsPage />} />
           <Route path="/my-cars" element={<MyCars />} />
           <Route path="/edit-car/:id" element={<EditCarPage />} />
@@ -90,7 +93,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
-    </div>
+    </>
   );
 };
 

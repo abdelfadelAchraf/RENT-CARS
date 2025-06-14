@@ -12,18 +12,26 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Configure storage
+// Configure storage with SVG-safe handling
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'car-rental',
-    allowed_formats: ['jpg', 'png', 'jpeg'],
-    transformation: [{ width: 500, height: 300, crop: 'limit' }]
-  } as any // Type assertion to handle any incompatibility
+  params: async (req, file) => {
+    const isSvg = file.mimetype === 'image/svg+xml';
+    console.log('Is SVG:', isSvg); // Debug log
+
+    return {
+      folder: 'car-rental',
+      allowed_formats: ['jpg', 'png', 'jpeg', 'svg', 'webp'],
+      ...(isSvg ? {} : {
+        transformation: [{ width: 500, height: 300, crop: 'limit' }]
+      })
+    };
+  }
 });
 
+
 // Create multer upload middleware
-export const upload = multer({ storage: storage });
+export const upload = multer({ storage });
 
 // Export cloudinary for direct operations
 export { cloudinary };

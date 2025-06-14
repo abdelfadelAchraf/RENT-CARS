@@ -113,13 +113,21 @@ const Navbar = () => {
                           <FaCar className="text-gray-500" />
                           <span>My cars</span>
                         </Link>
+
+
+                        <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setIsUserMenuOpen(false)}>
+                          <FiMenu className="text-gray-500" />
+                          <span>Dashboard</span>
+                        </Link>
                       </>
                     )}
+
                     <Link
                       to="/profile"
                       className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
+
                       <FiSettings className="text-gray-500" />
                       <span>Account Settings</span>
                     </Link>
@@ -185,6 +193,7 @@ const Navbar = () => {
                     <FiPlus className="text-blue-500" />
                     <span>Add a Car</span>
                   </Link>
+                  
 
                   <Link
                     to="/my-cars"
@@ -194,9 +203,15 @@ const Navbar = () => {
                     <FaCar className="text-gray-500" />
                     <span>My cars</span>
                   </Link>
+
+                   <Link to="/dashboard" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
+                <FiMenu className="text-gray-500" />
+                <span>Dashboard</span>
+              </Link>
                 </>
               )}
 
+             
               <Link to="/profile" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
                 <FiSettings className="text-gray-500" />
                 <span>Account Settings</span>
