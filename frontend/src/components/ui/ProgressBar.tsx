@@ -8,7 +8,7 @@ const ProgressBar = () => {
     style={{
         scaleX: scrollYProgress,
         position: "fixed",
-        top: 67,
+        top: 0,
         left: 0,
         right: 0,
         height: 5,

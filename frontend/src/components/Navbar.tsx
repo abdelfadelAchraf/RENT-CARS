@@ -37,7 +37,7 @@ const Navbar = () => {
   // Show a loading state or return null while checking authentication
   if (loading) {
     return (
-      <header className="bg-white shadow-md sticky top-0 z-50">
+      <header className="bg-white shadow-md  z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="uppercase text-blue-500 font-bold text-2xl md:text-3xl lg:text-4xl">
@@ -51,7 +51,7 @@ const Navbar = () => {
   }
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-white shadow-md z-50">
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -96,23 +96,23 @@ const Navbar = () => {
 
                     {user.role === 'renter' && (
                       <>
-                        <Link
+                        {/* <Link
                           to="/add-car"
                           className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FiPlus className="text-blue-500" />
                           <span>Add a Car</span>
-                        </Link>
+                        </Link> */}
 
-                        <Link
+                        {/* <Link
                           to="/my-cars"
                           className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FaCar className="text-gray-500" />
                           <span>My cars</span>
-                        </Link>
+                        </Link> */}
 
 
                         <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setIsUserMenuOpen(false)}>
@@ -185,7 +185,7 @@ const Navbar = () => {
               </div>
               {user.role === 'renter' && (
                 <>
-                  <Link
+                  {/* <Link
                     to="/add-car"
                     className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                     onClick={() => setIsUserMenuOpen(false)}
@@ -202,16 +202,16 @@ const Navbar = () => {
                   >
                     <FaCar className="text-gray-500" />
                     <span>My cars</span>
-                  </Link>
+                  </Link> */}
 
-                   <Link to="/dashboard" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
-                <FiMenu className="text-gray-500" />
-                <span>Dashboard</span>
-              </Link>
+                  <Link to="/dashboard" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
+                    <FiMenu className="text-gray-500" />
+                    <span>Dashboard</span>
+                  </Link>
                 </>
               )}
 
-             
+
               <Link to="/profile" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
                 <FiSettings className="text-gray-500" />
                 <span>Account Settings</span>

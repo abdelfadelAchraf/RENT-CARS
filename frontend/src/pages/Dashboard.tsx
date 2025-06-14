@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         let isMounted = true;
-
+        console.log("the user is ",user)
         const loadData = async () => {
             try {
                 if (user) {
@@ -119,19 +119,19 @@ const Dashboard: React.FC = () => {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="container mx-auto px-4 py-8 h-screen">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">My Cars</h1>
-                </div>
-                <div className="flex flex-col items-center justify-center py-16">
-                    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="mt-4 text-gray-600">Loading your cars...</p>
-                </div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className="container mx-auto px-4 py-8 h-screen">
+    //             <div className="flex justify-between items-center mb-8">
+    //                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800">My Cars</h1>
+    //             </div>
+    //             <div className="flex flex-col items-center justify-center py-16">
+    //                 <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    //                 <p className="mt-4 text-gray-600">Loading your cars...</p>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     // Show error if user is not authenticated
     if (!user) {
@@ -177,7 +177,7 @@ const Dashboard: React.FC = () => {
         { name: 'Sedan', value: 35, color: '#3B82F6' },
         { name: 'SUV', value: 25, color: '#10B981' },
         { name: 'Hatchback', value: 20, color: '#F59E0B' },
-        { name: 'Luxury', value: 20, color: '#EF4444' }
+        { name: 'Luxury', value: 20, color: '#EF4444' },
     ];
 
     const sidebarItems = [
@@ -191,7 +191,7 @@ const Dashboard: React.FC = () => {
 
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-screen bg-gray-50 -z-30">
             {/* Sidebar */}
             <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
                 <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
@@ -224,12 +224,12 @@ const Dashboard: React.FC = () => {
                     })}
                 </nav>
 
-                <div className="absolute bottom-0 w-full p-6">
+                {/* <div className="absolute bottom-0 w-full p-6">
                     <button className="flex items-center w-full px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
                         <LogOut className="w-5 h-5 mr-3" />
                         Logout
                     </button>
-                </div>
+                </div> */}
             </div>
 
             {/* Main Content */}
@@ -248,7 +248,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className="flex items-center space-x-4">
                             <div className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium">
-                                ACHRAF ABDELFADEL
+                               {user.name.toUpperCase()}
                             </div>
                         </div>
                     </div>
@@ -499,8 +499,8 @@ const Dashboard: React.FC = () => {
                                                     <button
                                                         onClick={() => toggleAvailability(car._id, car.isAvailable)}
                                                         className={`py-2 px-3 rounded-md transition-colors duration-200 text-sm ${car.isAvailable
-                                                            ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                                                            : 'bg-green-50 text-green-600 hover:bg-green-100'
+                                                            ? 'bg-red-50  text-red-600 hover:bg-red-100'
+                                                            : 'bg-green-50  text-green-600 hover:bg-green-100'
                                                             }`}
                                                     >
                                                         {car.isAvailable ? 'Set Unavailable' : 'Set Available'}
