@@ -10,14 +10,10 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 <!-- **vous trouvrez lien en haut dans description** :
 > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 
----
-
 ## table de matières
 
 - [Fonctionnalités principales](#Fonctionnalités principales)
 - [Aperçu de l'application](#Aperçu de l'application)
-
----
 
 ## 📌 Fonctionnalités principales
 
@@ -39,15 +35,11 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 - Middleware de protection d’API
 - Rôles (user / renter / admin)
 
----
-
 ## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> Aperçu de l'application
 
 ![rental_car](frontend/src/assets/rental_car.png)
 ![rental_car2](frontend/src/assets/rental_car2.png)
 ![rental_car3](frontend/src/assets/rental_car3.png)
-
----
 
 ## 🛠️ Technologies utilisées
 
@@ -59,8 +51,6 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 | Axios                 | Mongoose ODM              | GitHub Actions (CI/CD)       |
 | Vite                  |                           | Vercel (déploiement) |
 
----
-
 ## 📂 Structure du projet
 
 ```
@@ -69,8 +59,6 @@ RENT-CARS/
 ├── backend/ # Serveur API REST (Node.js + Express)
 ```
 
----
-
 ## Déploiement
 
 <!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
@@ -78,8 +66,6 @@ RENT-CARS/
 - **Backend** <!--déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**-->
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 - Intégration continue avec **GitHub Actions**
-
----
 
 ## ⚙️ Installation locale
 
@@ -121,8 +107,6 @@ EMAIL_USER=...
 EMAIL_PASSWORD=...
 ```
 
----
-
 ## Tests
 
 - Tests manuels réalisés sur les principales fonctionnalités : 
@@ -130,8 +114,6 @@ EMAIL_PASSWORD=...
   - Création / modification de voiture
   - Réservation
 - Intégration des API testées via Postman
-
----
 
 ## Évolutions futures
 
@@ -142,8 +124,6 @@ EMAIL_PASSWORD=...
 - 💬 Chat intégré avec le support
 - Suggestions personnalisées par IA
 
----
-
 ## 👥 Équipe
 
 >Achraf Abdelfadel [github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
@@ -152,13 +132,9 @@ EMAIL_PASSWORD=...
 ---
 > Imane Abasalah [github.com/amyaby](https://github.com/amyaby)
 
----
-
 ## 📄 Licence
 
 Ce projet est réalisé dans le cadre pédagogique du module *Technologie Web* – Université 2025.
-
----
 
 ## 📬 Contact
 
