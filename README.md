@@ -10,10 +10,22 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 <!-- **vous trouvrez lien en haut dans description** :
 > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 
-## table de matières
+## Table de matières
 
-- [Fonctionnalités principales](#Fonctionnalités-principales)
-- [Aperçu de l'application](#Aperçu-de-l'application)
+1. [Présentation du projet](#présentation-du-projet)
+2. [Table de matières](#table-de-matières)
+3. [Fonctionnalités principales](#fonctionnalités-principales)
+4. [Aperçu de l'application](#aperçu-de-lapplication)
+5. [Technologies utilisées](#technologies-utilisées)
+6. [Structure du projet](#structure-du-projet)
+7. [Déploiement](#déploiement)
+8. [Installation locale](#installation-locale)
+9. [Variables d’environnement](#variables-denvironnement-env)
+10. [Tests](#tests)
+11. [Évolutions futures](#évolutions-futures)
+12. [Équipe](#équipe)
+13. [Licence](#licence)
+14. [Contact](#contact)
 
 ## 📌 Fonctionnalités principales
 
