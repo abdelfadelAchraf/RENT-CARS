@@ -12,9 +12,8 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 ## Table de matières
 
-1. [Table de matières](#table-de-matières)
-2. [Fonctionnalités principales](#fonctionnalités-principales)
-3. [Aperçu de l'application](#aperçu-de-lapplication)
+1. [fonctionnalités-principales](#fonctionnalités-principales)
+2. [Aperçu de l'application](#aperçu-de-lapplication)
 4. [Technologies utilisées](#technologies-utilisées)
 5. [Structure du projet](#structure-du-projet)
 6. [Déploiement](#déploiement)
