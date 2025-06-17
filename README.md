@@ -14,18 +14,18 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 1. [fonctionnalités-principales](#fonctionnalités-principales)
 2. [aperçu-de-l'application](#aperçu-de-lapplication)
-4. [technologies-utilisées](#technologies-utilisées)
-5. [structure-du-projet](#structure-du-projet)
-6. [déploiement](#déploiement)
-7. [installation-locale](#installation-locale)
-8. [variables-d’environnement-.env](#variables-denvironnement-.env)
-9. [tests](#tests)
-10. [évolutions-futures](#évolutions-futures)
-11. [équipe](#équipe)
-12. [licence](#licence)
-13. [contact](#contact)
+3. [technologies-utilisées](#technologies-utilisées)
+4. [structure-du-projet](#structure-du-projet)
+5. [déploiement](#déploiement)
+6. [installation-locale](#installation-locale)
+7. [variables-d’environnement-.env](#variables-denvironnement-.env)
+8. [tests](#tests)
+9. [évolutions-futures](#évolutions-futures)
+10. [équipe](#équipe)
+11. [licence](#licence)
+12. [contact](#contact)
 
-## 📌 Fonctionnalités principales
+## 📌 fonctionnalités-principales
 
 ### 👤 Utilisateurs
 - Inscription avec vérification par email
