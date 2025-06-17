@@ -12,20 +12,19 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 ## Table de matières
 
-1. [Présentation du projet](#présentation-du-projet)
-2. [Table de matières](#table-de-matières)
-3. [Fonctionnalités principales](#fonctionnalités-principales)
-4. [Aperçu de l'application](#aperçu-de-lapplication)
-5. [Technologies utilisées](#technologies-utilisées)
-6. [Structure du projet](#structure-du-projet)
-7. [Déploiement](#déploiement)
-8. [Installation locale](#installation-locale)
-9. [Variables d’environnement](#variables-denvironnement-env)
-10. [Tests](#tests)
-11. [Évolutions futures](#évolutions-futures)
-12. [Équipe](#équipe)
-13. [Licence](#licence)
-14. [Contact](#contact)
+1. [Table de matières](#table-de-matières)
+2. [Fonctionnalités principales](#fonctionnalités-principales)
+3. [Aperçu de l'application](#aperçu-de-lapplication)
+4. [Technologies utilisées](#technologies-utilisées)
+5. [Structure du projet](#structure-du-projet)
+6. [Déploiement](#déploiement)
+7. [Installation locale](#installation-locale)
+8. [Variables d’environnement](#variables-denvironnement-env)
+9. [Tests](#tests)
+10. [Évolutions futures](#évolutions-futures)
+11. [Équipe](#équipe)
+12. [Licence](#licence)
+13. [Contact](#contact)
 
 ## 📌 Fonctionnalités principales
 
