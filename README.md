@@ -12,8 +12,8 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 ## table de matières
 
-- [Fonctionnalités principales](#fonctionnalités-principales)
-- [Aperçu de l'application](#aperçu-de-l'application)
+- [Fonctionnalités principales](#Fonctionnalités principales)
+- [Aperçu de l'application](#Aperçu de l'application)
 
 ## 📌 Fonctionnalités principales
 
