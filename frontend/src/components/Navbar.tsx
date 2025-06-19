@@ -96,29 +96,29 @@ const Navbar = () => {
 
                     {user.role === 'renter' && (
                       <>
-                        {/* <Link
+                         <Link
                           to="/add-car"
                           className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FiPlus className="text-blue-500" />
                           <span>Add a Car</span>
-                        </Link> */}
+                        </Link>
 
-                        {/* <Link
+                         <Link
                           to="/my-cars"
                           className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FaCar className="text-gray-500" />
                           <span>My cars</span>
-                        </Link> */}
+                        </Link> 
 
 
-                        <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setIsUserMenuOpen(false)}>
+                        {/* <Link to="/dashboard" className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={() => setIsUserMenuOpen(false)}>
                           <FiMenu className="text-gray-500" />
                           <span>Dashboard</span>
-                        </Link>
+                        </Link> */}
                       </>
                     )}
 
@@ -185,7 +185,7 @@ const Navbar = () => {
               </div>
               {user.role === 'renter' && (
                 <>
-                  {/* <Link
+                   <Link
                     to="/add-car"
                     className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100"
                     onClick={() => setIsUserMenuOpen(false)}
@@ -202,7 +202,7 @@ const Navbar = () => {
                   >
                     <FaCar className="text-gray-500" />
                     <span>My cars</span>
-                  </Link> */}
+                  </Link> 
 
                   <Link to="/dashboard" className="flex items-center gap-2 text-gray-700 hover:text-blue-500 py-2" onClick={() => setIsMenuOpen(false)}>
                     <FiMenu className="text-gray-500" />

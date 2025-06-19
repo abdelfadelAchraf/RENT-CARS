@@ -14,8 +14,7 @@ import Testimonials from '../components/Testimonials';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CarLogoCarousel from '../components/CarLogoCarousel';
-import DownloadApp from '../components/DownLoadApp';
-import Dashboard from './Dashboard';
+import DownloadApp from '../components/DownloadApp';
 
 const carImages = [
   car, jag1 , audi, image11, image12
@@ -117,7 +116,6 @@ const HomePage = () => {
          <WhyChooseUs/>
       </div> */}
 
-    <Dashboard/>
       <PopularCarRentalDeals />
       <hr className='text-gray-100' />
       <Testimonials/>
