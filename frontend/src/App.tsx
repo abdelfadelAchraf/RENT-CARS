@@ -25,7 +25,7 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import EditCarPage from './pages/EditCarPage';
 import ResetPassword from './pages/ResetPassword';
 import ProgressBar from './components/ui/ProgressBar';
-import Dashboard from './pages/Dashboard';
+
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -84,7 +84,7 @@ const App: React.FC = () => {
       
         <Route element={<ProtectedRoute />}>
           <Route path="/add-car" element={<AddCarPage />} />
-          <Route path="/dashboard" element={<Dashboard/>}/>
+         
           <Route path="/profile" element={<AccountSettingsPage />} />
           <Route path="/my-cars" element={<MyCars />} />
           <Route path="/edit-car/:id" element={<EditCarPage />} />
