@@ -10,39 +10,48 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 <!-- **vous trouvrez lien en haut dans description** :
 > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 
----
+## Table de matières
 
-## 📌 Fonctionnalités principales
+1. [fonctionnalités principales](#fonctionnalités-principales)
+2. [aperçu de l'application](#aperçu-de-lapplication)
+3. [technologies utilisées](#technologies-utilisées)
+4. [structure du projet](#structure-du-projet)
+5. [déploiement](#déploiement)
+6. [installation locale](#installation-locale)
+7. [variables d’environnement .env](#variables-denvironnement-.env)
+8. [tests](#tests)
+9. [évolutions futures](#évolutions-futures)
+10. [équipe](#équipe)
+11. [licence](#licence)
+12. [contact](#contact)
 
-### 👤 Utilisateurs
+## fonctionnalités-principales
+
+### Utilisateurs
 - Inscription avec vérification par email
 - Connexion / Déconnexion
 - Modification du profil et de l'image de profil
 - Réinitialisation de mot de passe
 - Réservation de véhicules
 
-### 🚘 Propriétaires (Renters)
+### Propriétaires (Renters)
 - Ajout de véhicules avec images
 - Modification et suppression de véhicules
 - Gestion des disponibilités
 - Suivi des réservations liées à leurs véhicules
 
-### 🔐 Authentification & Sécurité
+### Authentification & Sécurité
 - Authentification JWT
 - Middleware de protection d’API
 - Rôles (user / renter / admin)
 
----
-
-## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> Aperçu de l'application
+## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> aperçu-de-l'application
 
 ![rental_car](frontend/src/assets/rental_car.png)
 ![rental_car2](frontend/src/assets/rental_car2.png)
 ![rental_car3](frontend/src/assets/rental_car3.png)
 
----
-
-## 🛠️ Technologies utilisées
+## technologies-utilisées
 
 | Frontend              | Backend                   | Autres services              |
 |-----------------------|---------------------------|------------------------------|
@@ -52,9 +61,7 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 | Axios                 | Mongoose ODM              | GitHub Actions (CI/CD)       |
 | Vite                  |                           | Vercel (déploiement) |
 
----
-
-## 📂 Structure du projet
+## structure-du-projet
 
 ```
 RENT-CARS/
@@ -62,9 +69,7 @@ RENT-CARS/
 ├── backend/ # Serveur API REST (Node.js + Express)
 ```
 
----
-
-## Déploiement
+## déploiement
 
 <!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 - **Frontend** déployé sur [Vercel](https://vercel.com/)
@@ -72,9 +77,7 @@ RENT-CARS/
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 - Intégration continue avec **GitHub Actions**
 
----
-
-## ⚙️ Installation locale
+## ⚙️ installation-locale
 
 ### 1. Cloner le dépôt
 
@@ -100,7 +103,7 @@ npm install
 npm run dev              # Lancer le frontend sur http://localhost:5173
 ```
 
-## 📦 Variables d’environnement .env
+## Variables-d’environnement-.env
 
 ### Backend:
 ```
@@ -114,9 +117,7 @@ EMAIL_USER=...
 EMAIL_PASSWORD=...
 ```
 
----
-
-## Tests
+## tests
 
 - Tests manuels réalisés sur les principales fonctionnalités : 
   - Authentification
@@ -124,9 +125,7 @@ EMAIL_PASSWORD=...
   - Réservation
 - Intégration des API testées via Postman
 
----
-
-## Évolutions futures
+## évolutions-futures
 
 - 📱 Application mobile React Native
 - Système de notation & avis
@@ -135,9 +134,7 @@ EMAIL_PASSWORD=...
 - 💬 Chat intégré avec le support
 - Suggestions personnalisées par IA
 
----
-
-## 👥 Équipe
+## équipe
 
 >Achraf Abdelfadel [github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
 ---
@@ -145,15 +142,11 @@ EMAIL_PASSWORD=...
 ---
 > Imane Abasalah [github.com/amyaby](https://github.com/amyaby)
 
----
-
-## 📄 Licence
+## licence
 
 Ce projet est réalisé dans le cadre pédagogique du module *Technologie Web* – Université 2025.
 
----
-
-## 📬 Contact
+## contact
 
 Pour toute question ou suggestion :
 > 📧 [contact@rentalcars-demo.com](mailto:contact@rentalcars-demo.com)
