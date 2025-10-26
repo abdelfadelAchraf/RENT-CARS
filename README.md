@@ -55,11 +55,11 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 | Frontend              | Backend                   | Autres services              |
 |-----------------------|---------------------------|------------------------------|
-| React + TypeScript    | Node.js + Express         | MongoDB Atlas (base de données) |
+| React + TypeScript    | Node.js + Express         | MongoDB Atlas (database)     |
 | TailwindCSS           | REST API                  | Cloudinary (upload d'images) |
 | React Router DOM      | JWT Authentication        | Nodemailer (emailing)        |
-| Axios                 | Mongoose ODM              | GitHub Actions (CI/CD)       |
-| Vite                  |                           | Vercel (déploiement) |
+| Axios                 | Mongoose ODM              |                              |
+| Vite                  |                           |                              |
 
 ## structure-du-projet
 
@@ -72,10 +72,9 @@ RENT-CARS/
 ## déploiement
 
 <!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
-- **Frontend** déployé sur [Vercel](https://vercel.com/)
-- **Backend** <!--déployé sur [Heroku](https://heroku.com/) ou **AWS EC2**-->
+- **Frontend**
+- **Backend**
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-- Intégration continue avec **GitHub Actions**
 
 ## ⚙️ installation-locale
 
@@ -127,11 +126,11 @@ EMAIL_PASSWORD=...
 
 ## évolutions-futures
 
-- 📱 Application mobile React Native
+- Application mobile React Native
 - Système de notation & avis
 - Google Maps pour la localisation des voitures
 - Programme de fidélité
-- 💬 Chat intégré avec le support
+- Chat intégré avec le support
 - Suggestions personnalisées par IA
 
 ## équipe
