@@ -10,7 +10,7 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 <!-- **vous trouvez lien en haut dans description** :
 > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 
-## fonctionnalités-principales
+## Fonctionnalités principales
 
 * **Utilisateurs**
   - Inscription avec vérification par email
@@ -19,24 +19,24 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
   - Réinitialisation de mot de passe
   - Réservation de véhicules
 
-### Propriétaires (Renters)
-- Ajout de véhicules avec images
-- Modification et suppression de véhicules
-- Gestion des disponibilités
-- Suivi des réservations liées à leurs véhicules
+* **Propriétaires (Renters)**
+  - Ajout de véhicules avec images
+  - Modification et suppression de véhicules
+  - Gestion des disponibilités
+  - Suivi des réservations liées à leurs véhicules
 
-### Authentification & Sécurité
-- Authentification JWT
-- Middleware de protection d'API
-- Rôles (user / renter / admin)
+* **Authentification & Sécurité**
+  - Authentification JWT
+  - Middleware de protection d'API
+  - Rôles (user / renter / admin)
 
-## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> aperçu-de-l'application
+## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> Aperçu
 
 ![rental_car](frontend/src/assets/rental_car.png)
 ![rental_car2](frontend/src/assets/rental_car2.png)
 ![rental_car3](frontend/src/assets/rental_car3.png)
 
-## technologies-utilisées
+## Technologies utilisées
 
 | Frontend              | Backend                   | Autres services              |
 |-----------------------|---------------------------|------------------------------|
@@ -46,7 +46,7 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 | Axios                 | Mongoose ODM              |                              |
 | Vite                  |                           |                              |
 
-## structure-du-projet
+## Structure du projet
 
 ```
 RENT-CARS/
@@ -54,32 +54,32 @@ RENT-CARS/
 ├── backend/ # Serveur API REST (Node.js + Express)
 ```
 
-## déploiement
+## Déploiement
 
 <!-- > 🔗 [Lien de la démo](https://rent-cars-omega.vercel.app/) -->
 - **Frontend**
 - **Backend**
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
-## installation-locale
+## Installation locale
 
-### 1. Cloner le dépôt
+- 1. Repo
 
 ```bash
 git clone https://github.com/abdelfadelAchraf/RENT-CARS.git
 cd RENT-CARS
 ```
 
-### 2. Backend – Configuration & Lancement
+- 2. Backend
 
 ```bash
 cd backend
 npm install
-cp .env.example .env     # Créer un fichier .env avec les variables nécessaires
-npm start              # Lancer le backend
+cp .env.example .env
+npm start
 ```
 
-### 3. Frontend – Lancement
+- 3. Frontend
 
 ```bash
 cd frontend
@@ -87,9 +87,9 @@ npm install
 npm run dev              # http://localhost:5173
 ```
 
-## Variables-d'environnement-.env
+## Variables d'environnement .env
 
-### Backend:
+**Backend:**
 ```
 PORT=5000
 MONGODB_URI=...
