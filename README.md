@@ -12,12 +12,12 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 
 ## fonctionnalités-principales
 
-### Utilisateurs
-- Inscription avec vérification par email
-- Connexion / Déconnexion
-- Modification du profil et de l'image de profil
-- Réinitialisation de mot de passe
-- Réservation de véhicules
+* **Utilisateurs**
+  - Inscription avec vérification par email
+  - Connexion / Déconnexion
+  - Modification du profil et de l'image de profil
+  - Réinitialisation de mot de passe
+  - Réservation de véhicules
 
 ### Propriétaires (Renters)
 - Ajout de véhicules avec images
