@@ -1,6 +1,6 @@
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white) ![MongoDB](https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
-<!--# 🚗 RENT-CARS – Application de location de voitures-->
+<!--# RENT-CARS – Application de location de voitures-->
 # <img src="frontend/src/assets/logo.png" alt="RENT-CARS Logo" height="32"/> RENT-CARS – Application de location de voitures
 
 **RENT-CARS** est une application web fullstack de location de voitures entre particuliers, développée avec les technologies modernes du web : React, TypeScript, Node.js, Express et MongoDB.
@@ -76,7 +76,7 @@ RENT-CARS/
 - **Backend**
 - **Base de données** hébergée sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
-## ⚙️ installation-locale
+## installation-locale
 
 ### 1. Cloner le dépôt
 
@@ -99,7 +99,7 @@ npm start              # Lancer le backend
 ```bash
 cd frontend
 npm install
-npm run dev              # Lancer le frontend sur http://localhost:5173
+npm run dev              # http://localhost:5173
 ```
 
 ## Variables-d'environnement-.env
@@ -140,14 +140,3 @@ EMAIL_PASSWORD=...
 > Zakaria Ennaqui [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
 ---
 > Imane Abasalah [github.com/amyaby](https://github.com/amyaby)
-
-## licence
-
-Ce projet est réalisé dans le cadre pédagogique du module *Technologie Web* – Université 2025.
-
-## contact
-
-Pour toute question ou suggestion :
-> 📧 [contact@rentalcars-demo.com](mailto:contact@rentalcars-demo.com)
----
-> 🔗 [github.com/rentalcars-project](https://github.com/rentalcars-project)
