@@ -63,14 +63,14 @@ RENT-CARS/
 
 ## Installation locale
 
-- 1. Repo
+1. Repo
 
 ```bash
 git clone https://github.com/abdelfadelAchraf/RENT-CARS.git
 cd RENT-CARS
 ```
 
-- 2. Backend
+2. Backend
 
 ```bash
 cd backend
@@ -79,7 +79,7 @@ cp .env.example .env
 npm start
 ```
 
-- 3. Frontend
+3. Frontend
 
 ```bash
 cd frontend
