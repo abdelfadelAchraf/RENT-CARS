@@ -101,7 +101,7 @@ EMAIL_USER=...
 EMAIL_PASSWORD=...
 ```
 
-## tests
+## Tests
 
 - Tests manuels réalisés sur les principales fonctionnalités : 
   - Authentification
@@ -109,7 +109,7 @@ EMAIL_PASSWORD=...
   - Réservation
 - Intégration des API testées via Postman
 
-## évolutions-futures
+## Evolutions
 
 - Application mobile React Native
 - Système de notation & avis
@@ -118,9 +118,9 @@ EMAIL_PASSWORD=...
 - Chat intégré avec le support
 - Suggestions personnalisées par IA
 
-## équipe
+## Groupe
 
->Achraf Abdelfadel [github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
+> Achraf Abdelfadel [github.com/abdelfadelAchraf](https://github.com/abdelfadelAchraf)
 ---
 > Zakaria Ennaqui [github.com/zakariaennaqui](https://github.com/zakariaennaqui)
 ---
