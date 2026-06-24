@@ -30,6 +30,8 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
   - Middleware de protection d'API
   - Rôles (user / renter / admin)
 
+![Diagramme de cas d'utilisation](images/Screenshot_2026-06-24_014336.png)
+
 ## <img src="frontend/src/assets/phone.png" alt="phone" height="32"/> Aperçu
 
 ![rental_car](frontend/src/assets/rental_car.png)
@@ -46,6 +48,8 @@ Ce projet a été réalisé dans le cadre du module *Technologie Web*, par un gr
 | Axios                 | Mongoose ODM              |                              |
 | Vite                  |                           |                              |
 
+![Architecture globale](images/Screenshot_2026-06-24_014601.png)
+
 ## Structure du projet
 
 ```
@@ -53,6 +57,14 @@ RENT-CARS/
 ├── frontend/ # Interface utilisateur (React)
 ├── backend/ # Serveur API REST (Node.js + Express)
 ```
+
+### Architecture Frontend
+
+![Architecture Frontend](images/Screenshot_2026-06-24_014612.png)
+
+### Architecture Backend
+
+![Architecture Backend](images/Screenshot_2026-06-24_014623.png)
 
 ## Déploiement
 
@@ -109,6 +121,8 @@ EMAIL_PASSWORD=...
   - Réservation
 - Intégration des API testées via Postman
 
+![Planning du projet](images/Screenshot_2026-06-24_014324.png)
+
 ## Evolutions
 
 - Application mobile React Native
@@ -117,6 +131,36 @@ EMAIL_PASSWORD=...
 - Programme de fidélité
 - Chat intégré avec le support
 - Suggestions personnalisées par IA
+
+## Diagrammes de séquence
+
+### Inscription
+
+![Séquence Inscription](images/Screenshot_2026-06-24_014354.png)
+
+### Connexion
+
+![Séquence Connexion](images/Screenshot_2026-06-24_014415.png)
+
+### Profil utilisateur
+
+![Séquence Profil](images/Screenshot_2026-06-24_014431.png)
+
+### Ajout de véhicule
+
+![Séquence Ajout véhicule](images/Screenshot_2026-06-24_014450.png)
+
+### Modification de véhicule
+
+![Séquence Modification véhicule](images/Screenshot_2026-06-24_014504.png)
+
+### Suppression de véhicule
+
+![Séquence Suppression véhicule](images/Screenshot_2026-06-24_014522.png)
+
+### Recherche, réservation et paiement
+
+![Séquence Recherche et réservation](images/Screenshot_2026-06-24_014538.png)
 
 ## Groupe
 
